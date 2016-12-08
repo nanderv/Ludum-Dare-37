@@ -43,7 +43,7 @@ return function(x,y, rot)
  	local agent = {}
  	id =  id + 1
  	agent.name       ="agent".. id
-	agent.position   = {x=x, y=y, rotation=rot,speed = 100}
+	agent.position   = {x=x, y=y, rotation=rot}
 	agent.basic_move = {true}
 	agent.speed   = {speed = 100}
 	agent.bump_shape = {w = 28, h = 28}
@@ -59,3 +59,16 @@ end
 
 >> Removing an entity:
 core.component.remove(v, "idle")
+
+### Components
+Components are mostly added inline for Entities, since a lot of components are trivial, data-wise.
+
+### Systems
+A system is a logical unit. It contains:
+1. A name (String). It has to be unique.
+2. A function. Often update or draw. 
+3. A dictionary of requirements. Those are the names of components that entities must all have in order to be in the target list of a system.
+
+A system automatically gets a list of targets. That one can be iterated over (using pairs) to get all targets of a system.
+
+
