@@ -1,0 +1,13 @@
+Rendering order
+- For each pixel width do:
+-- Raycast in correct angle
+-- Update list of wall render locations
+Run 
+world:querySegment(x1,y1,x2,y2,filter)
+and read the list until you find a wall. All items in front of it are kept as being in front of it.
+
+Two lists:
+wall list:
+{ {min=1,max=50,obj=obj}, {min=51,max=100,obj=obj2}}
+
+Obj list:

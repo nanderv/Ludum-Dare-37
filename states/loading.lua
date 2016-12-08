@@ -29,9 +29,9 @@ loading.phases = {
     function()
        local pl = core.entity.add(game.entity_definitions.player.player(400,1100, 20))
         
-        camera = core.entity.add(game.entity_definitions.player.camera(400,400, pl.id))
     end,
     function()
+        -- load tiles one by one into the game.
         for k,v in pairs(game.data.tile_maps) do
             local i = 1
             while v.m.layers["collision"..i] do

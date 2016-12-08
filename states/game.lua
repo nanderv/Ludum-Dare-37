@@ -18,7 +18,6 @@ end
 
 function ctx:update(dt)
       lightWorld:update(dt)
-    lightWorld:setTranslation(-camera.position.x, -camera.position.y, 1)
     for k,v in core.system.orderedPairs(game.system_categories.update) do
         v.update(dt)
     end
@@ -27,7 +26,6 @@ end
 
 function ctx:draw()
     love.graphics.push()
-	    love.graphics.translate(-camera.position.x, -camera.position.y)
 	    for k,v in core.system.orderedPairs(game.system_categories.draw) do
 	        v.draw()
 	    end
