@@ -1,6 +1,7 @@
 SET game=Stealth_Game
 dir
-rmdir build /s  /Q
+del /q build\*
+for /d %x in (build\*) do @rd /s /q "%x"
 mkdir build
 jar -cMf build\%game%.love *
 copy license.txt build\
