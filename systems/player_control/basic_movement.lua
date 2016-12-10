@@ -14,7 +14,6 @@ system.update = function(dt)
 	system.hasWall = game.systems.raycaster.hasWall
 	if love.keyboard.isDown("w") then
 		if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
-			print(posX)
 			posX = posX + dirX * moveSpeed
 		end
 		if (not system.hasWall(math.floor(posX),math.floor(posY + dirY * moveSpeed))) then
@@ -62,7 +61,7 @@ system.update = function(dt)
 		planeY = oldPlaneX * math.sin(rotSpeed) + planeY * math.cos(rotSpeed)
 	end
 
-	game.entities.player.position.posX, game.entities.player.position.posY = posX, posY 
+	game.entities.player.position.posX, game.entities.player.position.posY = posX, posY
 	game.entities.player.position.dirX, game.entities.player.position.dirY = dirX, dirY
 	game.entities.player.position.planeX, game.entities.player.position.planeY = planeX, planeY
 end

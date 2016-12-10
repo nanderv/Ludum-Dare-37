@@ -80,7 +80,6 @@ end
 
 -- Leave loading screen
 function loading:leave(from)
-
     for k,v in pairs(game.systems) do
         print("Running system "..v.name)
     end

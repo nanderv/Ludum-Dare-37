@@ -52,9 +52,8 @@ function core.system.orderedPairs(t)
     -- in order
     return orderedNext, t, nil
 end
-function core.system.add(system,typ) 
+function core.system.add(system,typ)
 	if not system.importance then
-		print("HOI")
 		system.importance = 1
 	end
 
@@ -70,7 +69,7 @@ function core.system.add(system,typ)
 	system.targets = {}
 	system.system_entities = {}
 	local  b = { __mode = "v" }
-	setmetatable(system.targets, b) 
+	setmetatable(system.targets, b)
 	-- Add entity targets
 	for k,v in pairs( game.entities ) do
 		possible = true
@@ -101,8 +100,8 @@ function core.system.add(system,typ)
 			end
 			game.system_categories[v][system.name] = system
 			found = true
-	
-		
+
+
 	end
 
 	if found then
@@ -110,13 +109,13 @@ function core.system.add(system,typ)
 	end
 		error("Incorrect type ".. typ)
 
-	
+
 end
 
 
 function core.system.remove(system)
 	-- remove system from possible results from requirement
-	
+
 	for k,v in pairs(system.requirements)  do
 		for l,w in pairs(core.requirements_to_systems[k]) do
 			if w == system then
@@ -137,6 +136,6 @@ function core.system.remove(system)
 			game.system_categories[v][system.name] = nil
 		end
 	end
-	
-	
+
+
 end
