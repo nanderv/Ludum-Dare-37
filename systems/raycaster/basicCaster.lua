@@ -26,6 +26,7 @@ local image_per = {}
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
+local textureX = {}
 
 local drawEntityLineStart = {}
 local drawEntityLineEnd = {}
@@ -141,7 +142,7 @@ function system.update(dt)
 				end
 				wallX = wallX - math.floor((wallX));
 
-				local texX = math.floor(wallX * imageWidth);
+
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 				drawEntityLineStart[x][entityCounter] = drawStart
@@ -173,7 +174,10 @@ function system.update(dt)
 		wallX = wallX - math.floor((wallX));
 
 		--x coordinate on the texture
-		local texX = math.floor(wallX * imageWidth);
+		texX = math.floor(wallX * imageWidth);
+		print(texX)
+		texX = math.floor(wallX * imageWidth);
+		textureX[x] = texX
 		if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 		if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 		drawScreenLineStart[x] = drawStart
@@ -230,7 +234,7 @@ function system.draw()
 	love.graphics.setColor(255, 255, 255)
 
 	for x = 0, w, 1 do
-		quad = love.graphics.newQuad((x)  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+		quad = love.graphics.newQuad((textureX[x])  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
 		if image_per[x] then
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
 		end
