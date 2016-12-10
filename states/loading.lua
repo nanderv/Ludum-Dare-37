@@ -9,10 +9,24 @@ function my_require (str)
     loading.loaded_paths[str] = str
     return require (str)
 end
+local images = {}
+local function load_image(url, name)
+    if not images[name] then
+        images[name] = love.graphics.newImage(url)
+    end
+end
+function get_image(name)
+    return images[name]
 
 
+end
 loading.phases = {
     core.reset_game,
+    function()
+        load_image('assets/redbrick.png', "redbrick")
+                load_image('assets/wood.png', "wood")
+
+    end,
     require 'entities.load_all_entity_definitions',
     function()
          for k,v in pairs (loading.loaded_paths) do
@@ -28,10 +42,10 @@ loading.phases = {
     require 'states.loading_functions.load_systems', 
     function()
        local pl = core.entity.add(game.entity_definitions.player.player(400,1100, 20))
-     core.entity.add(game.entity_definitions.wall.base_wall(1,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
-          core.entity.add(game.entity_definitions.wall.base_wall(2,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
-          core.entity.add(game.entity_definitions.wall.base_wall(3,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
-          core.entity.add(game.entity_definitions.wall.base_wall(4,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
+     core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
 
 
     end,

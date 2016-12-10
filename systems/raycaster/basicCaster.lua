@@ -10,7 +10,9 @@
 --
 
 --setup map
-map={};
+local map={}
+local floor = {}
+local ceiling = {}
 local system = {}
 system.name = "raycaster"
 local posX = 1
@@ -21,10 +23,10 @@ local planeX = 0
 local planeY = 0.7
 local w = 400
 local h = 300
-local brick = love.graphics.newImage('assets/redbrick.png')
+local brick = get_image("redbrick")
 local brickHeight = brick:getHeight()
 local brickWidth  = brick:getWidth()
-
+local image_per = {}
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
@@ -33,7 +35,14 @@ function system.hasWall(x,y)
 	return not not map[x..":"..y]
 end
 function system.wall(x,y)
-		return  map[x..":"..y]
+
+		return  get_image(map[x..":"..y])
+end
+function system.getCeiling(x,y)
+	return ceiling[x..":"..y]
+end
+function system.getFloor(x,y)
+	return floor[x..":"..y]
 end
 function system.update(dt)
 if love.graphics.getWidth() then
@@ -97,6 +106,7 @@ for x = 0, w, 1 do
 
 			if (system.hasWall(mapX,mapY)) then
 				hit = 1
+				image_per[x] = system.wall(mapX,mapY)
 			end
 			end
 			if hit==0 then
@@ -190,12 +200,25 @@ function system.register(entity)
 	end
 end
 function system.unregister(entity)
-
+	if entity.walls.top then
+		map[entity.position.x..":"..entity.position.y+1] = nil
+	end
+		if entity.walls.bottom then
+		map[entity.position.x..":"..entity.position.y-1] = nil
+	end
+	if entity.walls.left then
+		map[(entity.position.x-1)..":"..entity.position.y] = nil
+	end
+		if entity.walls.right then
+		map[(entity.position.x+1)..":"..entity.position.y] = nil
+	end
 end
 function system.draw()
 	for x = 0, w, 1 do
 		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
-		love.graphics.draw(brick, quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
+		if image_per[x] then
+			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
+		end
 	end
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 end
