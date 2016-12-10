@@ -28,7 +28,12 @@ loading.phases = {
     require 'states.loading_functions.load_systems', 
     function()
        local pl = core.entity.add(game.entity_definitions.player.player(400,1100, 20))
-        
+     core.entity.add(game.entity_definitions.wall.base_wall(1,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(2,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(3,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(4,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
+
+
     end,
     function()
         -- load tiles one by one into the game.
