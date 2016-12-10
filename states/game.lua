@@ -18,7 +18,7 @@ function ctx:update(dt)
   if love.keyboard.isDown(CONTROLS.PAUSE) or love.keyboard.isDown(CONTROLS.ESCAPE) then
     GS.push(core.states.pause)
   end
-  --GS.push(core.states.note)
+
     for k,v in core.system.orderedPairs(game.system_categories.update) do
         v.update(dt)
     end

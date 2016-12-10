@@ -6,7 +6,7 @@ function ctx:enter(from)
 
 end
 function ctx:update(dt)
-  if love.keyboard.isDown("e") then
+  if love.keyboard.isDown("f") then
     print(" HOI" )
     GS.pop()
   end
