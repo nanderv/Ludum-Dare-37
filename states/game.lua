@@ -1,10 +1,7 @@
 local minfps = 1000
 local ctx = GS.new()
-local LightWorld = require "zz_lib.light_world" --the path to where light_world is (in this repo "lib")
-  lightWorld = LightWorld({
-    ambient = {30,30,30},         --the general ambient light in the environment
-  })
-    
+
+
 function ctx:enter(dt)
     GS.push(core.states.loading)
     love.mouse.setGrabbed(true)
@@ -12,12 +9,12 @@ end
 
 
 function get_nil()
-    return "nil" 
+    return "nil"
 end
 
 
 function ctx:update(dt)
-      lightWorld:update(dt)
+  --GS.push(core.states.note)
     for k,v in core.system.orderedPairs(game.system_categories.update) do
         v.update(dt)
     end
