@@ -35,3 +35,6 @@ next_id_func = function (first)
         return id
   end
 end
+
+core.get_image(x,y)
+end

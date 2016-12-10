@@ -1,10 +1,9 @@
 local id = 0
-return function(x,y)
+return function(x,y, url)
  	local agent = {}
  	id =  id + 1
- 	agent.name       ="agent".. id
+ 	agent.name       ="wall".. id
 	agent.position   = {x=x, y=y, rotation=rot,speed = 100}
-	agent.bump_shape = {w = 32, h = 32}
-	agent.light_shape = {w=32, h=32}
+	agent.image = {url=""}
 	return agent
 end
