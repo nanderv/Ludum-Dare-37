@@ -40,7 +40,7 @@ loading.phases = {
     end,
     require 'states.loading_functions.load_systems',
     function()
-       local pl = core.entity.add(game.entity_definitions.player.player(3,1, 20))
+       local pl = core.entity.add(game.entity_definitions.player.player(6,1, 20))
           core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
