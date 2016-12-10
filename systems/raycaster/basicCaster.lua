@@ -106,7 +106,7 @@ for x = 0, w, 1 do
 				side = 1
 			end
 
-			if (g > 0) then
+			if (map[mapX][mapY] > 0) then
 				hit = 1
 			end
 			end
