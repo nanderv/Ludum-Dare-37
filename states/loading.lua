@@ -41,11 +41,13 @@ loading.phases = {
     end,
     require 'states.loading_functions.load_systems', 
     function()
-       local pl = core.entity.add(game.entity_definitions.player.player(400,1100, 20))
+       local pl = core.entity.add(game.entity_definitions.player.player(12,12, 20))
      core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
-          core.entity.add(game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
+          local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick")
+          core.entity.add(ent)
+          core.entity.remove(ent)
 
 
     end,

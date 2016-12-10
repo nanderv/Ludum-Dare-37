@@ -45,6 +45,9 @@ function system.getFloor(x,y)
 	return get_image(floor[x..":"..y])
 end
 function system.update(dt)
+	local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
+	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
+	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
 if love.graphics.getWidth() then
 		w = love.graphics.getWidth()
 		h = love.graphics.getHeight()
@@ -132,58 +135,7 @@ for x = 0, w, 1 do
 			drawScreenLineEnd[x] = drawEnd
 		end
 
-		moveSpeed = dt * 5.0
-		rotSpeed = dt * 3.0
-		strafeSpeed = dt * 5.0
 
-		if love.keyboard.isDown("w") then
-			if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
-				posX = posX + dirX * moveSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY + dirY * moveSpeed))) then
-				posY = posY + dirY * moveSpeed
-			end
-		end
-		if love.keyboard.isDown("s") then
-			if (not system.hasWall(math.floor(posX - dirX * moveSpeed),math.floor(posY))) then
-				posX = posX - dirX * moveSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY - dirY * moveSpeed))) then
-				posY = posY - dirY * moveSpeed
-			end
-		end
-		if love.keyboard.isDown("d") then
-			if (not system.hasWall(math.floor(posX + planeX * moveSpeed),math.floor(posY))) then
-				posX = posX + planeX * strafeSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY + planeY * moveSpeed))) then
-				posY = posY + planeY * strafeSpeed
-			end
-		end
-		if love.keyboard.isDown("a") then
-			if (not system.hasWall(math.floor(posX - planeX * moveSpeed),math.floor(posY))) then
-				posX = posX - planeX * strafeSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY - planeY * moveSpeed))) then
-				posY = posY - planeY * strafeSpeed
-			end
-		end
-		if love.keyboard.isDown("right") then
-			oldDirX = dirX
-			dirX = dirX * math.cos(-rotSpeed) - dirY * math.sin(-rotSpeed)
-			dirY = oldDirX * math.sin(-rotSpeed) + dirY * math.cos(-rotSpeed)
-			oldPlaneX = planeX
-			planeX = planeX * math.cos(-rotSpeed) - planeY * math.sin(-rotSpeed)
-			planeY = oldPlaneX * math.sin(-rotSpeed) + planeY * math.cos(-rotSpeed)
-		end
-		if love.keyboard.isDown("left") then
-			oldDirX = dirX
-			dirX = dirX * math.cos(rotSpeed) - dirY * math.sin(rotSpeed)
-			dirY = oldDirX * math.sin(rotSpeed) + dirY * math.cos(rotSpeed)
-			oldPlaneX = planeX
-			planeX = planeX * math.cos(rotSpeed) - planeY * math.sin(rotSpeed)
-			planeY = oldPlaneX * math.sin(rotSpeed) + planeY * math.cos(rotSpeed)
-end
 	end
 
 function system.register(entity)
