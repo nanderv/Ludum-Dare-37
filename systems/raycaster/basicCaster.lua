@@ -118,9 +118,7 @@ for x = 0, w, 1 do
 		lineHeight = math.abs(math.floor(h / perpWallDist))
 
 		drawStart = -lineHeight / 2 + h / 2
-		if (drawStart < 0) then drawStart = 0 end
 		drawEnd = lineHeight / 2 + h / 2
-		if (drawEnd >= h) then drawEnd = h - 1 end
 
 
 		local wallX --where exactly the wall was hit
