@@ -1,5 +1,5 @@
 local id = 0
-return function(x,y, top, bottom, left, right, floor, wood, entity)
+return function(x,y, top, bottom, left, right, floor, entity)
  	local agent = {}
  	id =  id + 1
  	agent.name       ="wall".. id

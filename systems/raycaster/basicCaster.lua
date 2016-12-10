@@ -55,6 +55,9 @@ function system.update(dt)
 		h = love.graphics.getHeight()/2
 	end
 	for x = 0, w, 1 do
+		entities[x] = {}
+		drawEntityLineStart[x] = {}
+		drawEntityLineEnd[x] = {}
 		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
 		local rayPosY = posY
@@ -96,6 +99,7 @@ function system.update(dt)
 		while (hit == 0) do
 			count = count + 1
 			if count > 20 then
+				image_per[x] = nil
 			 	break
 			 	end
 			if (sideDistX < sideDistY) then
@@ -115,8 +119,9 @@ function system.update(dt)
 			end
 
 			if system.getEntity(mapX, mapY) then
-				entities[x][entityCounter] = system.getEntity(mapX, mapY)
 				entityCounter = entityCounter + 1
+
+				entities[x][entityCounter] = system.getEntity(mapX, mapY)
 				if (side == 0) then
 					perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
 				else
@@ -189,8 +194,7 @@ function system.register(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
-	map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.entity
-
+	entities[(entity.position.x+1)..":"..entity.position.y] = entity.walls.entity
 end
 
 function system.unregister(entity)
@@ -206,7 +210,7 @@ function system.unregister(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = nil
 	end
-	map[(entity.position.x+1)..":"..entity.position.y] = nil
+	entities[(entity.position.x+1)..":"..entity.position.y] = nil
 
 end
 function system.draw()
@@ -231,17 +235,19 @@ function system.draw()
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
 		end
 	end
-
-	love.graphics.pop()
-	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
-			if not entities[w] == nil and not entities[w][x] == nil then
-				quad = love.graphics.newQuad((x)  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
-				love.graphics.draw(entities[w][x], x, 0, 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
+
+			if  entities[x] and entities[x][i] then
+
+				quad = love.graphics.newQuad((x) % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+				love.graphics.draw(entities[x][i], quad, x, drawEntityLineStart[x][i], 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
 			end
 		end
 	end
+	love.graphics.pop()
+	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
+
 end
 
 function love.keypressed(key, unicode)
