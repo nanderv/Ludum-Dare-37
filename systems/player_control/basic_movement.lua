@@ -10,7 +10,7 @@ system.update = function(dt)
 	moveSpeed = dt * 5.0
 
 	rotSpeed = dt * 3.0
-	strafeSpeed = dt * 5.0
+	strafeSpeed = dt * 1.0
 	system.hasWall = game.systems.raycaster.hasWall
 	if love.keyboard.isDown("w") then
 		if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
