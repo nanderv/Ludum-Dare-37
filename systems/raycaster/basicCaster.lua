@@ -35,8 +35,7 @@ function system.hasWall(x,y)
 	return not not map[x..":"..y]
 end
 function system.wall(x,y)
-
-		return  get_image(map[x..":"..y])
+	return  get_image(map[x..":"..y])
 end
 function system.getCeiling(x,y)
 	return get_image(ceiling[x..":"..y])
@@ -53,7 +52,7 @@ if love.graphics.getWidth() then
 		h = love.graphics.getHeight()
 end
 for x = 0, w, 1 do
-		
+
 
 		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
@@ -96,7 +95,7 @@ for x = 0, w, 1 do
 			count = count + 1
 			if count > 20 then
 			 	break
-			 	end	
+			 	end
 			if (sideDistX < sideDistY) then
 				sideDistX = sideDistX + deltaDistX
 				mapX = mapX + stepX
@@ -140,16 +139,16 @@ for x = 0, w, 1 do
 
 function system.register(entity)
 	if entity.walls.top then
-		map[entity.position.x..":"..entity.position.y+1] = entity.walls.top 
+		map[entity.position.x..":"..entity.position.y+1] = entity.walls.top
 	end
 		if entity.walls.bottom then
-		map[entity.position.x..":"..entity.position.y-1] = entity.walls.bottom 
+		map[entity.position.x..":"..entity.position.y-1] = entity.walls.bottom
 	end
 	if entity.walls.left then
-		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left 
+		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left
 	end
 		if entity.walls.right then
-		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right 
+		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
 end
 function system.unregister(entity)
@@ -167,13 +166,27 @@ function system.unregister(entity)
 	end
 end
 function system.draw()
+	love.graphics.push()
+	love.graphics.setColor(200, 200, 200)
 	for x = 0, w, 1 do
-			quad = love.graphics.newQuad((x)  % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
+		love.graphics.line(x, 0, x, drawScreenLineStart[x])
+	end
 
+
+	love.graphics.setColor(100, 100, 100)
+	for x = 0, w, 1 do
+		love.graphics.line(x, drawScreenLineEnd[x], x, h)
+		--love.graphics.line(x1, y1, x2, y2, ...)
+	end
+	love.graphics.pop()
+
+	for x = 0, w, 1 do
+		quad = love.graphics.newQuad((x)  % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
 		if image_per[x] then
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
 		end
 	end
+
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 end
 
