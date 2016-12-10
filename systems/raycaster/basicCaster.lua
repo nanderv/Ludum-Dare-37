@@ -43,8 +43,8 @@ function system.update(dt)
 	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
 	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
 if love.graphics.getWidth() then
-		w = love.graphics.getWidth()
-		h = love.graphics.getHeight()
+		w = love.graphics.getWidth()/2
+		h = love.graphics.getHeight()/2
 end
 for x = 0, w, 1 do
 	local cameraX = 1.9 * x / w - 1
@@ -169,6 +169,8 @@ function system.unregister(entity)
 	end
 end
 function system.draw()
+	love.graphics.push()
+	love.graphics.scale(2);
 	love.graphics.setColor(200, 200, 200)
 	for x = 0, w, 1 do
 		love.graphics.line(x, 0, x, drawScreenLineStart[x])
@@ -188,7 +190,7 @@ function system.draw()
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
 		end
 	end
-
+	love.graphics.pop()
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 end
 

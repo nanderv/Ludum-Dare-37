@@ -29,22 +29,22 @@ loading.phases = {
     require 'entities.load_all_entity_definitions',
     function()
          for k,v in pairs (loading.loaded_paths) do
-            package.loaded[v] = nil        
+            package.loaded[v] = nil
          end
         collectgarbage("collect")
 
-        
+
         next_id = next_id_func()
         game.resources = {}
         -- require component types
     end,
-    require 'states.loading_functions.load_systems', 
+    require 'states.loading_functions.load_systems',
     function()
        local pl = core.entity.add(game.entity_definitions.player.player(3,1, 20))
           core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
-          local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", "redbrick", "wood", "redbrick", "redbrick")
+          local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick")
           core.entity.add(ent)
 
 
@@ -101,12 +101,11 @@ end
 
 -- Draw loading screen
 function loading:draw()
-    
-end 
+
+end
 
 
 function loading:keypressed(key)
 
 end
 return loading
-
