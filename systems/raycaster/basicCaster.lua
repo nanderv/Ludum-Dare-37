@@ -36,32 +36,29 @@ map={
   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+local system = {}
+system.name = "raycaster"
+local posX = 22
+local posY = 12
+local dirX = -1
+local dirY = 0
+local planeX = 0
+local planeY = 0.66
+local w = 800
+local h = 600
+local brick = love.graphics.newImage('assets/redbrick.png')
+local brickHeight = brick:getHeight()
+local brickWidth  = brick:getWidth()
 
-function love.load()
+local drawScreenLineStart = {}
+local drawScreenLineEnd = {}
+local drawScreenLineColor = {}
 
-	posX = 22
-
-	posY = 12
-
-	dirX = -1
-	dirY = 0
-
-	planeX = 0
-	planeY = 0.66
-
-	w = 800
-	h = 600
-	brick = love.graphics.newbrick('assets/redbrick.png')
-	brickHeight = brick:getHeight()
-	brickWidth  = brick:getWidth()
-
-	drawScreenLineStart = {}
-	drawScreenLineEnd = {}
-	drawScreenLineColor = {}
+function system.hasWall(x,y)
+	return map[x][y]
 end
-
-function love.update(dt)
-	for x = 0, w, 1 do
+function system.update(dt)
+for x = 0, w, 1 do
 		local cameraX = 2 * x / w - 1
 		local rayPosX = posX
 		local rayPosY = posY
@@ -183,10 +180,10 @@ function love.update(dt)
 			oldPlaneX = planeX
 			planeX = planeX * math.cos(rotSpeed) - planeY * math.sin(rotSpeed)
 			planeY = oldPlaneX * math.sin(rotSpeed) + planeY * math.cos(rotSpeed)
-		end
+end
 	end
 
-function love.draw()
+function system.draw()
 	for x = 0, w, 1 do
 		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
 		love.graphics.draw(brick, quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
@@ -199,3 +196,6 @@ function love.keypressed(key, unicode)
      if key == " " then love.graphics.toggleFullscreen() end
 
 end
+system.requirements = {position = true, image = true, isWall = true}
+
+return system

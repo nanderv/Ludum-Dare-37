@@ -5,5 +5,6 @@ return function(x,y, url)
  	agent.name       ="wall".. id
 	agent.position   = {x=x, y=y, rotation=rot,speed = 100}
 	agent.image = {url=""}
+	agent.isWall = {true}
 	return agent
 end

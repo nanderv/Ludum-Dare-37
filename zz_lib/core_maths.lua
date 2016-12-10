@@ -36,5 +36,5 @@ next_id_func = function (first)
   end
 end
 
-core.get_image(x,y)
+function core.get_image(x,y)
 end
