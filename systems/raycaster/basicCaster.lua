@@ -15,14 +15,9 @@ local floor = {}
 local ceiling = {}
 local system = {}
 system.name = "raycaster"
-local posX = 1
-local posY = 1
-local dirX = -1
-local dirY = 0
-local planeX = 0
-local planeY = 0.7
-local w = 400
-local h = 300
+
+local w = 0
+local h = 0
 local brick = get_image("redbrick")
 local brickHeight = brick:getHeight()
 local brickWidth  = brick:getWidth()

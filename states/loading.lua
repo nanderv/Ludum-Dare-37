@@ -24,8 +24,7 @@ loading.phases = {
     core.reset_game,
     function()
         load_image('assets/redbrick.png', "redbrick")
-                load_image('assets/wood.png', "wood")
-
+        load_image('assets/wood.png', "wood")
     end,
     require 'entities.load_all_entity_definitions',
     function()
@@ -41,13 +40,12 @@ loading.phases = {
     end,
     require 'states.loading_functions.load_systems', 
     function()
-       local pl = core.entity.add(game.entity_definitions.player.player(12,12, 20))
-     core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
+       local pl = core.entity.add(game.entity_definitions.player.player(3,1, 20))
+          core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
           core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick"))
-          local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, "redbrick", "redbrick")
+          local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", "redbrick", "wood", "redbrick", "redbrick")
           core.entity.add(ent)
-          core.entity.remove(ent)
 
 
     end,
