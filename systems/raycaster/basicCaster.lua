@@ -30,7 +30,7 @@ local image_per = {}
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
-
+local positions_found = {}
 function system.hasWall(x,y)
 	return not not map[x..":"..y]
 end
@@ -107,6 +107,7 @@ for x = 0, w, 1 do
 			if (system.hasWall(mapX,mapY)) then
 				hit = 1
 				image_per[x] = system.wall(mapX,mapY)
+				positions_found[x]  = {mapX, mapY}
 			end
 			end
 			if hit==0 then
@@ -215,7 +216,8 @@ function system.unregister(entity)
 end
 function system.draw()
 	for x = 0, w, 1 do
-		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
+			quad = love.graphics.newQuad((x)  % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
+
 		if image_per[x] then
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
 		end
