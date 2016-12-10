@@ -8,5 +8,6 @@ return function(x,y, rot)
 	agent.basic_move = {true}
 	agent.speed   = {speed = 100}
 
+
 	return agent
 end
