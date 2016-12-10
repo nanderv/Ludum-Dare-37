@@ -1,7 +1,9 @@
 core.entity = {}
 
 function core.entity.add(entity)
-	entity.id = next_id()
+	if not entity.id then
+		entity.id = next_id()
+	end
 	entity.systems = {}
 	for k,v in pairs(entity) do
 		if k ~= "id"  and k ~= "systems" then

@@ -10,39 +10,51 @@
 --
 
 --setup map
-map={};
+local map={}
+local floor = {}
+local ceiling = {}
 local system = {}
+local entities = {}
 system.name = "raycaster"
-local posX = 1
-local posY = 1
-local dirX = -1
-local dirY = 0
-local planeX = 0
-local planeY = 0.7
-local w = 400
-local h = 300
-local brick = love.graphics.newImage('assets/redbrick.png')
-local brickHeight = brick:getHeight()
-local brickWidth  = brick:getWidth()
 
+local w = 0
+local h = 0
+local image = get_image("redbrick")
+local imageHeight = 128
+local imageWidth  = 64
+local image_per = {}
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
 
+local drawEntityLineStart = {}
+local drawEntityLineEnd = {}
+
+local positions_found = {}
 function system.hasWall(x,y)
 	return not not map[x..":"..y]
 end
 function system.wall(x,y)
-		return  map[x..":"..y]
+	return  get_image(map[x..":"..y])
+end
+function system.getCeiling(x,y)
+	return get_image(ceiling[x..":"..y])
+end
+function system.getEntity(x,y)
+	return get_image(entities[x..":"..y])
+end
+function system.getFloor(x,y)
+	return get_image(floor[x..":"..y])
 end
 function system.update(dt)
-if love.graphics.getWidth() then
-		w = love.graphics.getWidth()
-		h = love.graphics.getHeight()
-end
-for x = 0, w, 1 do
-		
-
+	local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
+	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
+	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
+	if love.graphics.getWidth() then
+		w = love.graphics.getWidth()/2
+		h = love.graphics.getHeight()/2
+	end
+	for x = 0, w, 1 do
 		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
 		local rayPosY = posY
@@ -80,11 +92,12 @@ for x = 0, w, 1 do
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY
 		end
 		local count = 0
+		local entityCounter = 0;
 		while (hit == 0) do
 			count = count + 1
 			if count > 20 then
 			 	break
-			 	end	
+			 	end
 			if (sideDistX < sideDistY) then
 				sideDistX = sideDistX + deltaDistX
 				mapX = mapX + stepX
@@ -97,107 +110,138 @@ for x = 0, w, 1 do
 
 			if (system.hasWall(mapX,mapY)) then
 				hit = 1
-			end
-			end
-			if hit==0 then
-					mapX = 1000000
-					mapY = 1000000
-			end
-			if (side == 0)then
-				perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
-			else
-				perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
+				image_per[x] = system.wall(mapX,mapY)
+				positions_found[x]  = {mapX, mapY}
 			end
 
-			lineHeight = math.abs(math.floor(h / perpWallDist))
+			if system.getEntity(mapX, mapY) then
+				entities[x][entityCounter] = system.getEntity(mapX, mapY)
+				entityCounter = entityCounter + 1
+				if (side == 0) then
+					perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
+				else
+					perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
+				end
 
-			drawStart = -lineHeight / 2 + h / 2
-			if (drawStart < 0) then drawStart = 0 end
-			drawEnd = lineHeight / 2 + h / 2
-			if (drawEnd >= h) then drawEnd = h - 1 end
+				lineHeight = math.abs(math.floor(h / perpWallDist))
+
+				drawStart = -lineHeight / 2 + h / 2
+				drawEnd = lineHeight / 2 + h / 2
+
+				local wallX --where exactly the wall was hit
+				if (side == 0) then
+				 wallX = rayPosY + perpWallDist * rayDirY;
+				else
+				 wallX = rayPosX + perpWallDist * rayDirX;
+				end
+				wallX = wallX - math.floor((wallX));
+
+				local texX = math.floor(wallX * imageWidth);
+				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
+				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
+				drawEntityLineStart[x][entityCounter] = drawStart
+				drawEntityLineEnd[x][entityCounter] = drawEnd
+			end
+		end
+		if hit==0 then
+				mapX = 1000000
+				mapY = 1000000
+		end
+		if (side == 0) then
+			perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
+		else
+			perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
+		end
+
+		lineHeight = math.abs(math.floor(h / perpWallDist))
+
+		drawStart = -lineHeight / 2 + h / 2
+		drawEnd = lineHeight / 2 + h / 2
 
 
-			drawScreenLineStart[x] = drawStart
-			drawScreenLineEnd[x] = drawEnd
+		local wallX --where exactly the wall was hit
+		if (side == 0) then
+		 wallX = rayPosY + perpWallDist * rayDirY;
+		else
+		 wallX = rayPosX + perpWallDist * rayDirX;
 		end
+		wallX = wallX - math.floor((wallX));
 
-		moveSpeed = dt * 5.0
-		rotSpeed = dt * 3.0
-		strafeSpeed = dt * 5.0
-
-		if love.keyboard.isDown("w") then
-			if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
-				posX = posX + dirX * moveSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY + dirY * moveSpeed))) then
-				posY = posY + dirY * moveSpeed
-			end
-		end
-		if love.keyboard.isDown("s") then
-			if (not system.hasWall(math.floor(posX - dirX * moveSpeed),math.floor(posY))) then
-				posX = posX - dirX * moveSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY - dirY * moveSpeed))) then
-				posY = posY - dirY * moveSpeed
-			end
-		end
-		if love.keyboard.isDown("d") then
-			if (not system.hasWall(math.floor(posX + planeX * moveSpeed),math.floor(posY))) then
-				posX = posX + planeX * strafeSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY + planeY * moveSpeed))) then
-				posY = posY + planeY * strafeSpeed
-			end
-		end
-		if love.keyboard.isDown("a") then
-			if (not system.hasWall(math.floor(posX - planeX * moveSpeed),math.floor(posY))) then
-				posX = posX - planeX * strafeSpeed
-			end
-			if (not system.hasWall(math.floor(posX),math.floor(posY - planeY * moveSpeed))) then
-				posY = posY - planeY * strafeSpeed
-			end
-		end
-		if love.keyboard.isDown("right") then
-			oldDirX = dirX
-			dirX = dirX * math.cos(-rotSpeed) - dirY * math.sin(-rotSpeed)
-			dirY = oldDirX * math.sin(-rotSpeed) + dirY * math.cos(-rotSpeed)
-			oldPlaneX = planeX
-			planeX = planeX * math.cos(-rotSpeed) - planeY * math.sin(-rotSpeed)
-			planeY = oldPlaneX * math.sin(-rotSpeed) + planeY * math.cos(-rotSpeed)
-		end
-		if love.keyboard.isDown("left") then
-			oldDirX = dirX
-			dirX = dirX * math.cos(rotSpeed) - dirY * math.sin(rotSpeed)
-			dirY = oldDirX * math.sin(rotSpeed) + dirY * math.cos(rotSpeed)
-			oldPlaneX = planeX
-			planeX = planeX * math.cos(rotSpeed) - planeY * math.sin(rotSpeed)
-			planeY = oldPlaneX * math.sin(rotSpeed) + planeY * math.cos(rotSpeed)
-end
+		--x coordinate on the texture
+		local texX = math.floor(wallX * imageWidth);
+		if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
+		if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
+		drawScreenLineStart[x] = drawStart
+		drawScreenLineEnd[x] = drawEnd
 	end
+end
 
 function system.register(entity)
 	if entity.walls.top then
-		map[entity.position.x..":"..entity.position.y+1] = entity.walls.top 
+		map[entity.position.x..":"..entity.position.y+1] = entity.walls.top
 	end
 		if entity.walls.bottom then
-		map[entity.position.x..":"..entity.position.y-1] = entity.walls.bottom 
+		map[entity.position.x..":"..entity.position.y-1] = entity.walls.bottom
 	end
 	if entity.walls.left then
-		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left 
+		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left
 	end
 		if entity.walls.right then
-		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right 
+		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
+	map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.entity
+
 end
+
 function system.unregister(entity)
+	if entity.walls.top then
+		map[entity.position.x..":"..entity.position.y+1] = nil
+	end
+		if entity.walls.bottom then
+		map[entity.position.x..":"..entity.position.y-1] = nil
+	end
+	if entity.walls.left then
+		map[(entity.position.x-1)..":"..entity.position.y] = nil
+	end
+		if entity.walls.right then
+		map[(entity.position.x+1)..":"..entity.position.y] = nil
+	end
+	map[(entity.position.x+1)..":"..entity.position.y] = nil
 
 end
 function system.draw()
+	love.graphics.push()
+	love.graphics.scale(2);
+	love.graphics.setColor(200, 200, 200)
 	for x = 0, w, 1 do
-		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
-		love.graphics.draw(brick, quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
+		love.graphics.line(x, 0, x, drawScreenLineStart[x])
 	end
+
+
+	love.graphics.setColor(100, 100, 100)
+	for x = 0, w, 1 do
+		love.graphics.line(x, drawScreenLineEnd[x], x, h)
+		--love.graphics.line(x1, y1, x2, y2, ...)
+	end
+	love.graphics.setColor(255, 255, 255)
+
+	for x = 0, w, 1 do
+		quad = love.graphics.newQuad((x)  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+		if image_per[x] then
+			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
+		end
+	end
+
+	love.graphics.pop()
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
+	for x = 0, w, 1 do
+		for i = 20, 0, -1 do
+			if not entities[w] == nil and not entities[w][x] == nil then
+				quad = love.graphics.newQuad((x)  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+				love.graphics.draw(entities[w][x], x, 0, 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
+			end
+		end
+	end
 end
 
 function love.keypressed(key, unicode)

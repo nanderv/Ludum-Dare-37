@@ -15,9 +15,10 @@ function ctx:update(dt)
   if love.keyboard.isDown(CONTROLS.PAUSE) then
     GS.push(core.states.pause)
   end
-  for k,v in core.system.orderedPairs(game.system_categories.update) do
-    v.update(dt)
-  end
+  --GS.push(core.states.note)
+    for k,v in core.system.orderedPairs(game.system_categories.update) do
+        v.update(dt)
+    end
 end
 
 function ctx:draw()
