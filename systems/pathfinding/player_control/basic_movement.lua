@@ -52,7 +52,6 @@ system.update = function(dt)
 		oldPlaneX = planeX
 		planeX = planeX * math.cos(-rotSpeed) - planeY * math.sin(-rotSpeed)
 		planeY = oldPlaneX * math.sin(-rotSpeed) + planeY * math.cos(-rotSpeed)
-	end
 	if love.keyboard.isDown("left") then
 		oldDirX = dirX
 		dirX = dirX * math.cos(rotSpeed) - dirY * math.sin(rotSpeed)

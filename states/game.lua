@@ -14,7 +14,7 @@ end
 
 
 function ctx:update(dt)
-  --GS.push(core.states.note)
+    GS.push(core.states.note)
     for k,v in core.system.orderedPairs(game.system_categories.update) do
         v.update(dt)
     end
