@@ -39,10 +39,10 @@ function system.wall(x,y)
 		return  get_image(map[x..":"..y])
 end
 function system.getCeiling(x,y)
-	return ceiling[x..":"..y]
+	return get_image(ceiling[x..":"..y])
 end
 function system.getFloor(x,y)
-	return floor[x..":"..y]
+	return get_image(floor[x..":"..y])
 end
 function system.update(dt)
 if love.graphics.getWidth() then
