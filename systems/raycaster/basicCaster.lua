@@ -10,61 +10,58 @@
 --
 
 --setup map
-map={
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+local map={}
+local floor = {}
+local ceiling = {}
 local system = {}
 system.name = "raycaster"
-local posX = 22
-local posY = 12
+local posX = 1
+local posY = 1
 local dirX = -1
 local dirY = 0
 local planeX = 0
-local planeY = 0.66
-local w = 800
-local h = 600
-local brick = love.graphics.newImage('assets/redbrick.png')
+local planeY = 0.7
+local w = 400
+local h = 300
+local brick = get_image("redbrick")
 local brickHeight = brick:getHeight()
 local brickWidth  = brick:getWidth()
+<<<<<<< HEAD
 
 local wood = love.graphics.newImage('assets/wood.png')
 local woodHeight = wood:getHeight()
 local woodWidth  = wood:getWidth()
 
 
+=======
+local image_per = {}
+>>>>>>> 32f994d56a95832ca497338e1148e8b17b7a29dc
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
-
+local positions_found = {}
 function system.hasWall(x,y)
-	return map[x][y]
+	return not not map[x..":"..y]
+end
+function system.wall(x,y)
+
+		return  get_image(map[x..":"..y])
+end
+function system.getCeiling(x,y)
+	return get_image(ceiling[x..":"..y])
+end
+function system.getFloor(x,y)
+	return get_image(floor[x..":"..y])
 end
 function system.update(dt)
+if love.graphics.getWidth() then
+		w = love.graphics.getWidth()
+		h = love.graphics.getHeight()
+end
 for x = 0, w, 1 do
-		local cameraX = 2 * x / w - 1
+
+
+		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
 		local rayPosY = posY
 		local rayDirX = dirX + planeX * cameraX
@@ -100,7 +97,15 @@ for x = 0, w, 1 do
 			stepY = 1
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY
 		end
+		local count = 0
 		while (hit == 0) do
+<<<<<<< HEAD
+=======
+			count = count + 1
+			if count > 20 then
+			 	break
+			 	end
+>>>>>>> 32f994d56a95832ca497338e1148e8b17b7a29dc
 			if (sideDistX < sideDistY) then
 				sideDistX = sideDistX + deltaDistX
 				mapX = mapX + stepX
@@ -113,9 +118,14 @@ for x = 0, w, 1 do
 
 			if (map[mapX][mapY] > 0) then
 				hit = 1
+				image_per[x] = system.wall(mapX,mapY)
+				positions_found[x]  = {mapX, mapY}
 			end
 			end
-
+			if hit==0 then
+					mapX = 1000000
+					mapY = 1000000
+			end
 			if (side == 0)then
 				perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
 			else
@@ -188,6 +198,34 @@ for x = 0, w, 1 do
 		end
 end
 
+function system.register(entity)
+	if entity.walls.top then
+		map[entity.position.x..":"..entity.position.y+1] = entity.walls.top
+	end
+		if entity.walls.bottom then
+		map[entity.position.x..":"..entity.position.y-1] = entity.walls.bottom
+	end
+	if entity.walls.left then
+		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left
+	end
+		if entity.walls.right then
+		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
+	end
+end
+function system.unregister(entity)
+	if entity.walls.top then
+		map[entity.position.x..":"..entity.position.y+1] = nil
+	end
+		if entity.walls.bottom then
+		map[entity.position.x..":"..entity.position.y-1] = nil
+	end
+	if entity.walls.left then
+		map[(entity.position.x-1)..":"..entity.position.y] = nil
+	end
+		if entity.walls.right then
+		map[(entity.position.x+1)..":"..entity.position.y] = nil
+	end
+end
 function system.draw()
 	love.graphics.setColor(200, 200, 200);
 	for x = 0, w, 1 do
@@ -196,10 +234,13 @@ function system.draw()
 
 	love.graphics.setColor(255, 255, 255);
 	for x = 0, w, 1 do
-		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
-		love.graphics.draw(brick, quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
+			quad = love.graphics.newQuad((x)  % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
+
+		if image_per[x] then
+			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
+		end
 	end
-	
+
 	love.graphics.setColor(200, 200, 200);
 	for x = 0, w, 1 do
 		love.graphics.line(x, drawScreenLineEnd[x], x, h)
@@ -212,6 +253,6 @@ function love.keypressed(key, unicode)
      if key == " " then love.graphics.toggleFullscreen() end
 
 end
-system.requirements = {position = true, image = true, isWall = true}
+system.requirements = {position = true, walls= true}
 
 return system
