@@ -50,9 +50,19 @@ local brick = love.graphics.newImage('assets/redbrick.png')
 local brickHeight = brick:getHeight()
 local brickWidth  = brick:getWidth()
 
+local wood  = love.graphics.newImage('assets/wood.png')
+local woodHeight = wood:getHeight()
+local woodWidth  = wood:getWidth()
+
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
+
+local drawBuffer = {}
+
+for y = 0, h, 1 do
+	drawBuffer[y] = {}
+end
 
 function system.hasWall(x,y)
 	return map[x][y]
@@ -180,15 +190,60 @@ for x = 0, w, 1 do
 			oldPlaneX = planeX
 			planeX = planeX * math.cos(rotSpeed) - planeY * math.sin(rotSpeed)
 			planeY = oldPlaneX * math.sin(rotSpeed) + planeY * math.cos(rotSpeed)
+		end
 end
-	end
 
 function system.draw()
 	for x = 0, w, 1 do
 		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
 		love.graphics.draw(brick, quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
 	end
-	love.graphics.setColor(255, 12, 12)
+	--FLOOR
+	local floorXWall, floorYWall --x, y position of the floor texel at the bottom of the wall
+
+	--4 different wall directions possible
+ 	if side == 0 and rayDirX > 0 then
+	   floorXWall = mapX;
+	   floorYWall = mapY + wallX
+	else if(side == 0 and rayDirX < 0) then
+
+	   floorXWall = mapX + 1.0;
+	   floorYWall = mapY + wallX;
+   	else if(side == 1 and rayDirY > 0) then
+	   floorXWall = mapX + wallX;
+	   floorYWall = mapY;
+	 else
+	   floorXWall = mapX + wallX;
+	   floorYWall = mapY + 1.0;
+   	end
+	local distWall, distPlayer, currentDist;
+
+	distWall = perpWallDist;
+	distPlayer = 0.0;
+
+	 if (drawEnd < 0) then
+		  drawEnd = h; --becomes < 0 when the integer overflows
+	  end
+
+	 --draw the floor from drawEnd to the bottom of the screen
+	 for y = drawEnd + 1, h, y++ do
+	   currentDist = h / (2.0 * y - h); //you could make a small lookup table for this instead
+
+	   local weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+	   local currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
+	   local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
+
+	   local floorTexX, floorTexY;
+	   floorTexX = math.floor(currentFloorX * texWidth) % texWidth;
+	   floorTexY = math.floor(currentFloorY * texHeight) % texHeight;
+
+	   --floor
+	   buffer[y][x] = (texture[3][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
+
+	   --ceiling (symmetrical!)
+	   buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
+   	end
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 end
 
