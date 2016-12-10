@@ -38,7 +38,7 @@ map={
 };
 local system = {}
 system.name = "raycaster"
-local posX = 22
+local posX = -100
 local posY = 12
 local dirX = -1
 local dirY = 0
@@ -55,7 +55,7 @@ local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
 
 function system.hasWall(x,y)
-	return map[x][y]
+	return not map[x] or not map[x][y] or map[x][y] > 0
 end
 function system.update(dt)
 for x = 0, w, 1 do
@@ -96,6 +96,7 @@ for x = 0, w, 1 do
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY
 		end
 		while (hit == 0) do
+	
 			if (sideDistX < sideDistY) then
 				sideDistX = sideDistX + deltaDistX
 				mapX = mapX + stepX
@@ -106,7 +107,7 @@ for x = 0, w, 1 do
 				side = 1
 			end
 
-			if (map[mapX][mapY] > 0) then
+			if (system.hasWall(mapX,mapY)) then
 				hit = 1
 			end
 			end
@@ -134,34 +135,34 @@ for x = 0, w, 1 do
 		strafeSpeed = dt * 5.0
 
 		if love.keyboard.isDown("w") then
-			if (map[math.floor(posX + dirX * moveSpeed)][math.floor(posY)] == 0) then
+			if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
 				posX = posX + dirX * moveSpeed
 			end
-			if (map[math.floor(posX)][math.floor(posY + dirY * moveSpeed)] == 0) then
+			if (not system.hasWall(math.floor(posX),math.floor(posY + dirY * moveSpeed))) then
 				posY = posY + dirY * moveSpeed
 			end
 		end
 		if love.keyboard.isDown("s") then
-			if (map[math.floor(posX - dirX * moveSpeed)][math.floor(posY)] == 0) then
+			if (not system.hasWall(math.floor(posX - dirX * moveSpeed),math.floor(posY))) then
 				posX = posX - dirX * moveSpeed
 			end
-			if (map[math.floor(posX)][math.floor(posY - dirY * moveSpeed)] == 0) then
+			if (not system.hasWall(math.floor(posX),math.floor(posY - dirY * moveSpeed))) then
 				posY = posY - dirY * moveSpeed
 			end
 		end
 		if love.keyboard.isDown("d") then
-			if (map[math.floor(posX + planeX * moveSpeed)][math.floor(posY)] == 0) then
+			if (not system.hasWall(math.floor(posX + planeX * moveSpeed),math.floor(posY))) then
 				posX = posX + planeX * strafeSpeed
 			end
-			if (map[math.floor(posX)][math.floor(posY + planeY * moveSpeed)] == 0) then
+			if (not system.hasWall(math.floor(posX),math.floor(posY + planeY * moveSpeed))) then
 				posY = posY + planeY * strafeSpeed
 			end
 		end
 		if love.keyboard.isDown("a") then
-			if (map[math.floor(posX - planeX * moveSpeed)][math.floor(posY)] == 0) then
+			if (not system.hasWall(math.floor(posX - planeX * moveSpeed),math.floor(posY))) then
 				posX = posX - planeX * strafeSpeed
 			end
-			if (map[math.floor(posX)][math.floor(posY - planeY * moveSpeed)] == 0) then
+			if (not system.hasWall(math.floor(posX),math.floor(posY - planeY * moveSpeed))) then
 				posY = posY - planeY * strafeSpeed
 			end
 		end
@@ -188,7 +189,6 @@ function system.draw()
 		quad = love.graphics.newQuad(x % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
 		love.graphics.draw(brick, quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / brickHeight,  0, 0)
 	end
-	love.graphics.setColor(255, 12, 12)
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 end
 
