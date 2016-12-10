@@ -16,16 +16,16 @@ loading.phases = {
     require 'entities.load_all_entity_definitions',
     function()
          for k,v in pairs (loading.loaded_paths) do
-            package.loaded[v] = nil        
+            package.loaded[v] = nil
          end
         collectgarbage("collect")
 
-        
+
         next_id = next_id_func()
         game.resources = {}
         -- require component types
     end,
-    require 'states.loading_functions.load_systems', 
+    require 'states.loading_functions.load_systems',
     function()
        local pl = core.entity.add(game.entity_definitions.player.player(400,1100, 20))
      core.entity.add(game.entity_definitions.wall.base_wall(1,1, "redbrick", "redbrick", nil, nil, "redbrick", "redbrick"))
@@ -64,7 +64,6 @@ end
 
 -- Leave loading screen
 function loading:leave(from)
-
     for k,v in pairs(game.systems) do
         print("Running system "..v.name)
     end
@@ -87,12 +86,11 @@ end
 
 -- Draw loading screen
 function loading:draw()
-    
-end 
+
+end
 
 
 function loading:keypressed(key)
 
 end
 return loading
-
