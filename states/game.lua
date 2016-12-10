@@ -3,8 +3,10 @@ local ctx = GS.new()
 
 
 function ctx:enter(dt)
+    note_image = love.graphics.newImage("assets/videogame_note1.png")
+    note_image = love.graphics.newImage("assets/wood.png")
     GS.push(core.states.loading)
-    love.mouse.setGrabbed(true)
+    --love.mouse.setGrabbed(true)
 end
 
 
@@ -14,7 +16,7 @@ end
 
 
 function ctx:update(dt)
-    GS.push(core.states.note)
+    --GS.push(core.states.note)
     for k,v in core.system.orderedPairs(game.system_categories.update) do
         v.update(dt)
     end
