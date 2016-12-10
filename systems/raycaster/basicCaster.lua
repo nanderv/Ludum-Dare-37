@@ -38,7 +38,7 @@ map={
 };
 local system = {}
 system.name = "raycaster"
-local posX = -100
+local posX = 12
 local posY = 12
 local dirX = -1
 local dirY = 0
@@ -62,6 +62,9 @@ local drawBuffer = {}
 
 for y = 0, h, 1 do
 	drawBuffer[y] = {}
+	for x = 0, w, 1 do
+		drawBuffer[y][x] = 0
+	end
 end
 
 function system.hasWall(x,y)
@@ -175,8 +178,8 @@ function system.update(dt)
 	   	end
 		local distWall, distPlayer, currentDist;
 
-		print("test 1")
-		print(perpWallDist)
+		--print("test 1")
+		--print(perpWallDist)
 
 
 		distWall = perpWallDist;
@@ -186,32 +189,34 @@ function system.update(dt)
 			 drawEnd = h --becomes < 0 when the integer overflows
 		 end
 
+		 drawEnd = math.floor(drawEnd)
+
+
 		 --draw the floor from drawEnd to the bottom of the screen
 		 for y = drawEnd + 1, h, 1 do
 		   currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
 		   local weight = (currentDist - distPlayer) / (distWall - distPlayer);
 
-		   print("test 2")
-		   print((currentDist - distPlayer), (distWall - distPlayer))
+		   --print("test 2")
+		   --print((currentDist - distPlayer), (distWall - distPlayer))
 
 
 		   local currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
 		   local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
-		   print("test 3")
-   		   print(currentFloorX, currentFloorY)
-		   print("test 4")
+		   --print("test 3")
+   		   --print(currentFloorX, currentFloorY)
+		   --print("test 4")
 
 		   local floorTexX, floorTexY;
 		   local floorTexX = math.floor(currentFloorX * woodWidth) % woodWidth;
 		   local floorTexY = math.floor(currentFloorY * woodHeight) % woodHeight;
 
 		   --floor
-		   print(floorTexX, floorTexY)
-		   drawBuffer[y][x] = wood:getPixel(floorTexX, floorTexY)
+		   --drawBuffer[y][x] = wood:getPixel(1, y % 16)
 
 		   --ceiling (symmetrical!)
-		   drawBuffer[h - y][x] = wood:getPixel(floorTexX, floorTexY)
+		   --drawBuffer[h - y][x] = wood:getPixel(floorTexX, floorTexY)
 	   	end
 
 		moveSpeed = dt * 5.0
