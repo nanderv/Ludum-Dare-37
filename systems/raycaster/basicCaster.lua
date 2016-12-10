@@ -47,90 +47,98 @@ if love.graphics.getWidth() then
 		h = love.graphics.getHeight()
 end
 for x = 0, w, 1 do
+	local cameraX = 1.9 * x / w - 1
+	local rayPosX = posX
+	local rayPosY = posY
+	local rayDirX = dirX + planeX * cameraX
+	local rayDirY = dirY + planeY * cameraX
 
+	local mapX = math.floor(rayPosX)
+	local mapY = math.floor(rayPosY)
 
-		local cameraX = 1.9 * x / w - 1
-		local rayPosX = posX
-		local rayPosY = posY
-		local rayDirX = dirX + planeX * cameraX
-		local rayDirY = dirY + planeY * cameraX
+	local sideDistX
+	local sideDistY
 
-		local mapX = math.floor(rayPosX)
-		local mapY = math.floor(rayPosY)
+	local deltaDistX = math.sqrt(1 + (rayDirY ^ 2) / (rayDirX ^ 2))
+	local deltaDistY = math.sqrt(1 + (rayDirX ^ 2) / (rayDirY ^ 2))
+	local perWallDist
 
-		local sideDistX
-		local sideDistY
+	local stepX
+	local stepY
 
-		local deltaDistX = math.sqrt(1 + (rayDirY ^ 2) / (rayDirX ^ 2))
-		local deltaDistY = math.sqrt(1 + (rayDirX ^ 2) / (rayDirY ^ 2))
-		local perWallDist
+	local hit = 0
+	local side = 0
 
-		local stepX
-		local stepY
-
-		local hit = 0
-		local side = 0
-
-		if (rayDirX < 0) then
-			stepX = -1
-			sideDistX = (rayPosX - mapX) * deltaDistX
-		else
-			stepX = 1
-			sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX
-		end
-		if (rayDirY < 0) then
-			stepY = -1
-			sideDistY = (rayPosY - mapY) * deltaDistY
-		else
-			stepY = 1
-			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY
-		end
-		local count = 0
-		while (hit == 0) do
-			count = count + 1
-			if count > 20 then
-			 	break
-			 	end
-			if (sideDistX < sideDistY) then
-				sideDistX = sideDistX + deltaDistX
-				mapX = mapX + stepX
-				side = 0
-			else
-				sideDistY = sideDistY + deltaDistY
-				mapY = mapY + stepY
-				side = 1
-			end
-
-			if (system.hasWall(mapX,mapY)) then
-				hit = 1
-				image_per[x] = system.wall(mapX,mapY)
-				positions_found[x]  = {mapX, mapY}
-			end
-			end
-			if hit==0 then
-					mapX = 1000000
-					mapY = 1000000
-			end
-			if (side == 0)then
-				perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
-			else
-				perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
-			end
-
-			lineHeight = math.abs(math.floor(h / perpWallDist))
-
-			drawStart = -lineHeight / 2 + h / 2
-			if (drawStart < 0) then drawStart = 0 end
-			drawEnd = lineHeight / 2 + h / 2
-			if (drawEnd >= h) then drawEnd = h - 1 end
-
-
-			drawScreenLineStart[x] = drawStart
-			drawScreenLineEnd[x] = drawEnd
-		end
-
-
+	if (rayDirX < 0) then
+		stepX = -1
+		sideDistX = (rayPosX - mapX) * deltaDistX
+	else
+		stepX = 1
+		sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX
 	end
+	if (rayDirY < 0) then
+		stepY = -1
+		sideDistY = (rayPosY - mapY) * deltaDistY
+	else
+		stepY = 1
+		sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY
+	end
+	local count = 0
+	while (hit == 0) do
+		count = count + 1
+		if count > 20 then
+		 	break
+		 	end
+		if (sideDistX < sideDistY) then
+			sideDistX = sideDistX + deltaDistX
+			mapX = mapX + stepX
+			side = 0
+		else
+			sideDistY = sideDistY + deltaDistY
+			mapY = mapY + stepY
+			side = 1
+		end
+
+		if (system.hasWall(mapX,mapY)) then
+			hit = 1
+			image_per[x] = system.wall(mapX,mapY)
+			positions_found[x]  = {mapX, mapY}
+		end
+		end
+		if hit==0 then
+				mapX = 1000000
+				mapY = 1000000
+		end
+		if (side == 0)then
+			perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
+		else
+			perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
+		end
+
+		lineHeight = math.abs(math.floor(h / perpWallDist))
+
+		drawStart = -lineHeight / 2 + h / 2
+		if (drawStart < 0) then drawStart = 0 end
+		drawEnd = lineHeight / 2 + h / 2
+		if (drawEnd >= h) then drawEnd = h - 1 end
+
+
+		local wallX --where exactly the wall was hit
+		if (side == 0) then
+		 wallX = rayPosY + perpWallDist * rayDirY;
+		else
+		 wallX = rayPosX + perpWallDist * rayDirX;
+		end
+		wallX = wallX - math.floor((wallX));
+
+		--x coordinate on the texture
+		local texX = math.floor(wallX * brickWidth);
+		if(side == 0 and rayDirX > 0) then texX = brickWidth - texX - 1 end
+		if(side == 1 and rayDirY < 0) then texX = brickWidth - texX - 1 end
+		drawScreenLineStart[x] = drawStart
+		drawScreenLineEnd[x] = drawEnd
+	end
+end
 
 function system.register(entity)
 	if entity.walls.top then
@@ -161,7 +169,6 @@ function system.unregister(entity)
 	end
 end
 function system.draw()
-	love.graphics.push()
 	love.graphics.setColor(200, 200, 200)
 	for x = 0, w, 1 do
 		love.graphics.line(x, 0, x, drawScreenLineStart[x])
@@ -173,7 +180,7 @@ function system.draw()
 		love.graphics.line(x, drawScreenLineEnd[x], x, h)
 		--love.graphics.line(x1, y1, x2, y2, ...)
 	end
-	love.graphics.pop()
+	love.graphics.setColor(255, 255, 255)
 
 	for x = 0, w, 1 do
 		quad = love.graphics.newQuad((x)  % brickWidth, 0, 1, brickHeight, brickWidth, brickHeight)
