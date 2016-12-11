@@ -5,9 +5,6 @@ local     function pack(...)
 function load_walls(wall_list, list, bx, by, brot)
 	print(list, brot)
 	for k,v in pairs(wall_list) do
-
-
-
 		local ent = game.entity_definitions.wall.base_wall(v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8])
 		local axx, bxx =  ent.position.x, ent.position.y
 		if brot == 1 then
@@ -28,8 +25,8 @@ function load_walls(wall_list, list, bx, by, brot)
 		list[#list+1] = ent
 		core.entity.add(ent)
 	end
-
 end
+
 local function get_actual_coords(rel, pos, rev)
 		local x,y = pos.x,pos.y
 			if rel.rot == 1 then
@@ -86,12 +83,8 @@ system.update = function(dt)
 			current_zone = next_zone
 		  	next_zone = game.entity_definitions.zone(current_zone.zone.next_room)
   			core.entity.add(next_zone)
-
 		end
-
-
 	end
-
 end
 
 system.register = function(entity)

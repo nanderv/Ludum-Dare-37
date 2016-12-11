@@ -91,11 +91,11 @@ all_regions["room1"] =  {
 
 			{-2, 1, nil, nil, nil, "redbrick", nil, nil},
 
-			{-2, -4, nil,  "wood", nil, "redbrick", nil, nil},
-			{-2, -4, nil,  "wood", nil, nil, nil, nil},
-			{-1, -4, nil,  "wood", nil, nil, nil, nil},
-			{ 0, -4, nil,  "wood", nil, nil, nil, nil},
-			{ 1, -4, nil,  "wood", nil, nil, nil, nil},
+			--{-2, -4, nil,  "wood", nil, "redbrick", nil, nil},
+			--{-2, -4, nil,  "wood", nil, nil, nil, nil},
+			--{-1, -4, nil,  "wood", nil, nil, nil, nil},
+			--{ 0, -4, nil,  "wood", nil, nil, nil, nil},
+			--{ 1, -4, nil,  "wood", nil, nil, nil, nil},
 
 
 			{ -1, -4, "shade0", nil, nil, nil, nil, nil},
@@ -106,6 +106,9 @@ all_regions["room1"] =  {
 			{ -1, 1, "shade5", nil, nil, nil, nil, nil},
 			{ -1, 2, "shade6", nil, nil, nil, nil, nil},
 			{ -1, 3, "shade7", nil, nil, nil, nil, nil},
+			{ -1, 3, "shade7", nil, nil, nil, nil, nil},
+
+			{ 0, 2, nil , nil, nil, nil, "videogame_note1"},
 		},list, bX, bY, bRot )
 
 		return (rot+ all_regions["room1"].end_position.rot)%4

@@ -28,12 +28,7 @@ local function load_animation(prefix, suffix, name)
 		local running = true
 		for i = 0, 1000, 1 do
 			number = string.format("%4.4d", i)
-			print("numbers", number)
-			print("test 1", prefix)
-			print("test 2", suffix)
-			print("test 3", prefix .. number .. suffix)
 			local test =  prefix .. number .. suffix
-			print("test 4", test)
 			local f=io.open(test,"r")
 			if f~=nil then
 				print("test nil")
@@ -64,6 +59,7 @@ loading.phases = {
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
 	load_image("assets/floor_tile_blood2.png", "floor_tile")
 	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
+	load_image("wipArt/transparant_texture.png", "transparent")
 
 	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade0");
 	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "1.png", "shade1");

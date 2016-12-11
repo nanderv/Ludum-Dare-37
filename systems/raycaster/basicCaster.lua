@@ -43,13 +43,18 @@ local canvas = love.graphics.newCanvas(w, h)
 local textureX = {}
 local entityTextureX = {}
 local floorTextureX = {}
+local halfHeightTexureX = {}
 
 local floorVariable = {}
 
 local drawEntityLineStart = {}
 local drawEntityLineEnd = {}
+
 local drawFloorLineStart = {}
 local drawFloorLineEnd = {}
+
+local drawHalfHeightStart = {}
+local drawHalfHeightEnd = {}
 
 local positions_found = {}
 function system.hasWall(x,y)
@@ -157,7 +162,7 @@ function system.update(dt)
 				side = 1
 			end
 
-			if (system.hasWall(mapX,mapY)) then
+			if (system.hasWall(mapX,mapY) and not floors[mapX..":"..mapY]) then
 				hit = 1
 				--print("wall", system.wall(mapX,mapY))
 				image_per[x] = system.wall(mapX,mapY)
@@ -254,7 +259,7 @@ function system.update(dt)
 				local texX = math.floor(wallX * imageWidth);
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
-				drawFloorLineStart[x][floorCounter] = drawStart
+				drawFloorLineStart[x][floorCounter] = h / 2
 				drawFloorLineEnd[x][floorCounter] = drawEnd
 				floorTextureX[x][floorCounter] = texX
 			end
@@ -383,9 +388,9 @@ function system.draw()
 
 	for x = 0, w, 1 do
 		quad = love.graphics.newQuad((textureX[x])  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
-		--print("TESTING 2", animation_per[x])
-			--print("TESTING", animation_per)
-		love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
+		if image_per[x] then
+			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
+		end
 	end
 
 	love.graphics.draw(canvas)
