@@ -6,10 +6,10 @@ lightWorld = LightWorld({
   })
 
 function ctx:enter(dt)
-    note_image = love.graphics.newImage("assets/wood.png")
-
 
   GS.push(core.states.loading)
+  love.mouse.setVisible(false)
+  love.mouse.setGrabbed(true)
 end
 
 function ctx:update(dt)
@@ -18,9 +18,9 @@ function ctx:update(dt)
     GS.push(core.states.pause)
   end
 
-    for k,v in core.system.orderedPairs(game.system_categories.update) do
-        v.update(dt)
-    end
+  for k,v in core.system.orderedPairs(game.system_categories.update) do
+    v.update(dt)
+  end
 end
 
 function ctx:draw()
@@ -32,7 +32,7 @@ function ctx:draw()
   for k,v in core.system.orderedPairs(game.system_categories.draw_ui) do
     v.draw_ui()
   end
-  love.graphics.print("Current FPS: "..tostring(fps).. "MIN".. minfps, 10, 10)
+  -- love.graphics.print("Current FPS: "..tostring(fps).. "MIN".. minfps, 10, 10)
 end
 
 function ctx:leave()

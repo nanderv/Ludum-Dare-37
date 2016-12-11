@@ -9,7 +9,7 @@ models = {}
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest", 1)
   GS.registerEvents()
-  GS.switch(core.states.main)
+  GS.switch(core.states.menu)
 end
 
 -- This one will only be used for debugging purposes, love.keyDown is used in most other cases
