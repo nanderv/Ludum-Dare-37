@@ -25,12 +25,4 @@ function ctx:keypressed(key)
   quickie.keypressed(key)
 end
 
-function ctx:addButton()
-
-end
-
-function ctx:addSlider()
-  
-end
-
 return ctx
