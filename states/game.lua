@@ -35,6 +35,7 @@ function ctx:draw()
 end
 
 function ctx:leave()
+  love.mouse.setVisible(true)
   love.mouse.setGrabbed(false)
   print('leaving')
 end

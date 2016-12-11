@@ -11,7 +11,7 @@ system.update = function(dt)
     moveSpeed = dt * v.speed.movement
 
     strafeSpeed = dt * v.speed.strafe
-    if love.keyboard.isDown(CONTROLS.UP) then
+    if love.keyboard.isDown(CONTROLS.MOVE_UP) then
       if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
         posX = posX + dirX * moveSpeed
       end
@@ -19,7 +19,7 @@ system.update = function(dt)
         posY = posY + dirY * moveSpeed
       end
     end
-    if love.keyboard.isDown(CONTROLS.DOWN) then
+    if love.keyboard.isDown(CONTROLS.MOVE_DOWN) then
       if (not system.hasWall(math.floor(posX - dirX * moveSpeed),math.floor(posY))) then
         posX = posX - dirX * moveSpeed
       end
@@ -27,7 +27,7 @@ system.update = function(dt)
         posY = posY - dirY * moveSpeed
       end
     end
-    if love.keyboard.isDown(CONTROLS.RIGHT) then
+    if love.keyboard.isDown(CONTROLS.MOVE_RIGHT) then
       if (not system.hasWall(math.floor(posX + planeX * moveSpeed),math.floor(posY))) then
         posX = posX + planeX * strafeSpeed
       end
@@ -35,7 +35,7 @@ system.update = function(dt)
         posY = posY + planeY * strafeSpeed
       end
     end
-    if love.keyboard.isDown(CONTROLS.LEFT) then
+    if love.keyboard.isDown(CONTROLS.MOVE_LEFT) then
       if (not system.hasWall(math.floor(posX - planeX * moveSpeed),math.floor(posY))) then
         posX = posX - planeX * strafeSpeed
       end
