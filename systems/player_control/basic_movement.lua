@@ -11,7 +11,7 @@ system.update = function(dt)
     moveSpeed = dt * v.speed.movement
 
     strafeSpeed = dt * v.speed.strafe
-    if love.keyboard.isDown("w") then
+    if love.keyboard.isDown(CONTROLS.UP) then
       if (not system.hasWall(math.floor(posX + dirX * moveSpeed),math.floor(posY))) then
         posX = posX + dirX * moveSpeed
       end
@@ -19,7 +19,7 @@ system.update = function(dt)
         posY = posY + dirY * moveSpeed
       end
     end
-    if love.keyboard.isDown("s") then
+    if love.keyboard.isDown(CONTROLS.DOWN) then
       if (not system.hasWall(math.floor(posX - dirX * moveSpeed),math.floor(posY))) then
         posX = posX - dirX * moveSpeed
       end
@@ -27,7 +27,7 @@ system.update = function(dt)
         posY = posY - dirY * moveSpeed
       end
     end
-    if love.keyboard.isDown("d") then
+    if love.keyboard.isDown(CONTROLS.RIGHT) then
       if (not system.hasWall(math.floor(posX + planeX * moveSpeed),math.floor(posY))) then
         posX = posX + planeX * strafeSpeed
       end
@@ -35,13 +35,33 @@ system.update = function(dt)
         posY = posY + planeY * strafeSpeed
       end
     end
-    if love.keyboard.isDown("a") then
+    if love.keyboard.isDown(CONTROLS.LEFT) then
       if (not system.hasWall(math.floor(posX - planeX * moveSpeed),math.floor(posY))) then
         posX = posX - planeX * strafeSpeed
       end
       if (not system.hasWall(math.floor(posX),math.floor(posY - planeY * moveSpeed))) then
         posY = posY - planeY * strafeSpeed
       end
+    end
+
+    rotSpeed = dt * v.speed.rotate * 10
+    -- right
+    if love.keyboard.isDown(CONTROLS.ROT_RIGHT) then
+      local oldDirX = dirX
+      dirX = dirX * math.cos(-rotSpeed) - dirY * math.sin(-rotSpeed)
+      dirY = oldDirX * math.sin(-rotSpeed) + dirY * math.cos(-rotSpeed)
+      local oldPlaneX = planeX
+      planeX = planeX * math.cos(-rotSpeed) - planeY * math.sin(-rotSpeed)
+      planeY = oldPlaneX * math.sin(-rotSpeed) + planeY * math.cos(-rotSpeed)
+    end
+    -- left
+    if love.keyboard.isDown(CONTROLS.ROT_LEFT) then
+      local oldDirX = dirX
+      dirX = dirX * math.cos(rotSpeed) - dirY * math.sin(rotSpeed)
+      dirY = oldDirX * math.sin(rotSpeed) + dirY * math.cos(rotSpeed)
+      local oldPlaneX = planeX
+      planeX = planeX * math.cos(rotSpeed) - planeY * math.sin(rotSpeed)
+      planeY = oldPlaneX * math.sin(rotSpeed) + planeY * math.cos(rotSpeed)
     end
 
     v.position.posX, v.position.posY = posX, posY
