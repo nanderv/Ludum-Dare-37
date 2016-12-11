@@ -15,7 +15,7 @@ local entities = {}
 local floors = {}
 local ceiling = {}
 local system = {}
-
+local dtt = 0
 system.name = "raycaster"
 local scaleFactor = 4
 local w = love.graphics.getWidth() / scaleFactor
@@ -27,9 +27,13 @@ local imageData = image:getData()
 local ceiling = get_image("ceiling_tile")
 local ceilingData = ceiling:getData()
 
+local animationFrame = 0
+local animationTime = 0
+
 local imageHeight = 128
 local imageWidth  = 64
 local image_per = {}
+local animation_per = {}
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
@@ -52,8 +56,13 @@ function system.hasWall(x,y)
 	return not not map[x..":"..y] or not not floors[x..":"..y]
 end
 function system.wall(x,y)
-	return  get_image(map[x..":"..y])
+	return  get_animation(map[x..":"..y], animationFrame) or get_image(map[x..":"..y])
 end
+
+function system.wall_animated(x,y)
+	return get_animation(map[x..":"..y])
+end
+
 function system.getCeiling(x,y)
 	return get_image(ceiling[x..":"..y])
 end
@@ -64,6 +73,13 @@ function system.getFloor(x,y)
 	return get_image(floors[x..":"..y])
 end
 function system.update(dt)
+	animationTime = animationTime + dt
+	if animationTime > 0.1 then
+		animationFrame = animationFrame + 1
+		animationFrame = animationFrame % 8
+		animationTime = animationTime - 0.1
+	end
+
 	local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
 	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
 	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
@@ -143,7 +159,9 @@ function system.update(dt)
 
 			if (system.hasWall(mapX,mapY)) then
 				hit = 1
+				--print("wall", system.wall(mapX,mapY))
 				image_per[x] = system.wall(mapX,mapY)
+
 				positions_found[x]  = {mapX, mapY}
 			end
 
@@ -366,9 +384,9 @@ function system.draw()
 
 	for x = 0, w, 1 do
 		quad = love.graphics.newQuad((textureX[x])  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
-		if image_per[x] then
-			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
-		end
+		--print("TESTING 2", animation_per[x])
+			--print("TESTING", animation_per)
+		love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
 	end
 
 	love.graphics.draw(canvas)
