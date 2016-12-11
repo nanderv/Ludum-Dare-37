@@ -1,6 +1,6 @@
 local system = {}
 
-system.name = "basic_move"
+system.name = "keyboard_movement"
 
 system.update = function(dt)
   system.hasWall = game.systems.raycaster.hasWall

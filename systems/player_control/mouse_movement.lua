@@ -1,14 +1,14 @@
 local system = {}
 
-system.name = "mouse_control"
+system.name = "mouse_movement"
 
 system.update = function(dt)
   for k,v in pairs(system.targets) do
     local dx, dy = love.mouse.getPosition()
 
     dx = dx - love.graphics.getWidth()/2
-    dy = dy - love.graphics.getHeight()/2
-    print("mouse " .. dx .. " " .. dy)
+    -- dy = dy - love.graphics.getHeight()/2
+    -- print("mouse " .. dx .. " " .. dy)
 
     -- dirX = v.position.dirX + dx*v.speed.rotate * dt
     -- dirY = v.position.dirY + dy*v.speed.rotate * dt
