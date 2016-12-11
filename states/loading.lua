@@ -25,7 +25,8 @@ loading.phases = {
     load_image('assets/redbrick.png', "redbrick")
     load_image('assets/wood.png', "wood")
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
-	load_image("assets/floor_tile.png", "floor")
+	load_image("assets/floor_tile.png", "floor_tile")
+	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
   end,
   require 'entities.load_all_entity_definitions',
   function()

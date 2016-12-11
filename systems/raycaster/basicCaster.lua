@@ -18,15 +18,24 @@ local system = {}
 
 system.name = "raycaster"
 
-local w = love.graphics.getWidth()/2
-local h = love.graphics.getHeight()/2
-local image = get_image("redbrick")
+local w = love.graphics.getWidth()/4
+local h = love.graphics.getHeight()/4
+local image = get_image("floor_tile")
+local imageData = image:getData()
+
+
+local ceiling = get_image("ceiling_tile")
+local ceilingData = ceiling:getData()
+
+
 local imageHeight = 128
 local imageWidth  = 64
 local image_per = {}
 local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
+
+local canvas = love.graphics.newCanvas(w, h)
 
 local textureX = {}
 local entityTextureX = {}
@@ -59,6 +68,9 @@ function system.update(dt)
 	local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
 	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
 	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
+	love.graphics.setCanvas(canvas)
+	love.graphics.clear()
+	love.graphics.setBlendMode("alpha")
 	for x = 0, w, 1 do
 		entities[x] = {}
 		drawEntityLineStart[x] = {}
@@ -288,11 +300,32 @@ function system.update(dt)
 		if (drawEnd < 0) then
 			drawEnd = h
 		end
-		floorVariable[x][0] = distWall
-		floorVariable[x][1] = distPlayer
-		floorVariable[x][2] = floorXWall
-		floorVariable[x][3] = floorYWall
+
+
+		--Draw to render target / canvas
+		local imageWidth = 64
+		local imageHeight = 64
+		for y = drawEnd + 1, h, 1 do
+			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
+
+			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+			local currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
+			local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
+
+			local floorTexX, floorTexY;
+			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
+			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
+
+			if floorTexX and floorTexY then
+				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+				love.graphics.points(x, y)
+				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+				love.graphics.points(x, h-y)
+			end
+		end
 	end
+	love.graphics.setCanvas()
 end
 
 function system.register(entity)
@@ -331,7 +364,7 @@ function system.unregister(entity)
 end
 function system.draw()
 	love.graphics.push()
-	love.graphics.scale(2);
+	love.graphics.scale(4);
 	love.graphics.setColor(200, 200, 200)
 	for x = 0, w, 1 do
 		love.graphics.line(x, 0, x, drawScreenLineStart[x])
@@ -351,42 +384,9 @@ function system.draw()
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
 		end
 	end
-	local imageData = image:getData()
-	for x = 0, w, 1 do
-		local distWall = floorVariable[x][0]
-		local distPlayer = floorVariable[x][1]
-		local floorXWall = floorVariable[x][2]
-		local floorYWall = floorVariable[x][3]
-		local imageWidth = 64
-		local imageHeight = 64
-		local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
-		local drawEnd = drawScreenLineEnd[x]
-		for y = drawEnd + 1, h, 1 do
 
-			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
+	love.graphics.draw(canvas)
 
-			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
-
-			local currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
-			local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
-
-			local floorTexX, floorTexY;
-			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
-			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
-
-			--floor
-			--buffer[y][x] = (texture[3][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
-
-			if floorTexX and floorTexY then
-				print("tex",floorTexX, floorTexY)
-				print(imageHeight, imageWidth)
-				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y)
-			end
-			--ceiling (symmetrical!)
-			--buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
-		end
-	end
 	love.graphics.setColor(255, 255, 255)
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
