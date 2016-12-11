@@ -37,13 +37,13 @@ end
 
 
 -- Spawns an entity, and also spawns it's subcomponents, which an object CAN return as a return value.
-function core.entity.spawn(w, zone_id,absolute)
+function core.entity.spawn(w, zone_id, ePos, bPos)
 	local da = 0
 	local ent, subs = w[1](unpack(w))
 	ent.remove_zone = zone_id
 	if ent.position then
-		ent.position.x = ent.position.x + game.systems.scroll.x
-		ent.position.y = ent.position.y + game.systems.scroll.y
+		ent.position.x = ent.position.x
+		ent.position.y = ent.position.y
 	end
 
 	if w.add then

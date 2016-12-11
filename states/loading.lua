@@ -25,7 +25,8 @@ loading.phases = {
     function()
         load_image('assets/redbrick.png', "redbrick")
         load_image('assets/wood.png', "wood")
-        load_image("assets/videogame_note1.png", "videogame_note1")
+        load_image("assets/Notes/videogame_note1.png", "videogame_note1")
+        load_image("assets/room/walls/wall_pristine_left.png","wall_pristine_left")
 
     end,
     require 'entities.load_all_entity_definitions',
@@ -43,13 +44,9 @@ loading.phases = {
     require 'states.loading_functions.load_systems',
     function()
 
-       local pl = core.entity.add(game.entity_definitions.player.player(6,1, 20))
-          core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, nil, nil))
-          core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, nil, nil))
-          core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, nil, nil))
-          local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, nil, nil)
+       local pl = core.entity.add(game.entity_definitions.player.player(0.5,0.5, 20))
+
           core.entity.add(game.entity_definitions.note.note(1,1, "videogame_note1"))
-          core.entity.add(ent)
 
 
     end,

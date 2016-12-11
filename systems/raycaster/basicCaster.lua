@@ -240,12 +240,16 @@ function system.register(entity)
 		map[entity.position.x..":"..entity.position.y-1] = entity.walls.bottom
 	end
 	if entity.walls.left then
+		print("HOI")
 		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left
 	end
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
-	floors[(entity.position.x)..":"..entity.position.y] = entity.walls.floor
+	if entity.walls.floor then
+		print("HI") 
+		floors[(entity.position.x)..":"..entity.position.y] = entity.walls.floor
+	end
 end
 
 function system.unregister(entity)
@@ -261,7 +265,9 @@ function system.unregister(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = nil
 	end
-	floors[(entity.position.x)..":"..entity.position.y] = nil
+	if floors[(entity.position.x)..":"..entity.position.y] then
+		floors[(entity.position.x)..":"..entity.position.y] = nil
+	end
 
 end
 function system.draw()
