@@ -131,16 +131,10 @@ function system.update(dt)
 			end
 
 			if system.getEntity(mapX, mapY) then
-				print("ENTITY", system.getEntity(mapX, mapY))
-				print("ENTITY counter", entityCounter)
 				entityCounter = entityCounter + 1
 
 				entities[x][entityCounter] = system.getEntity(mapX, mapY)
-				--[[if (side == 0) then
-					perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
-				else
-					perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
-				end]]--
+
 				perpWallDist = math.sqrt((mapX -posX) ^ 2 + (mapY - posY) ^ 2 )
 
 				lineHeight = math.abs(math.floor(h / perpWallDist))
@@ -156,14 +150,49 @@ function system.update(dt)
 				end
 				wallX = wallX - math.floor((wallX));
 
+				local spriteX = mapX - posX;
+				local spriteY = mapY - posY;
+
+				---transform sprite with the inverse camera matrix
+				-- [ planeX   dirX ] -1                                       [ dirY      -dirX ]
+				-- [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
+				-- [ planeY   dirY ]                                          [ -planeY  planeX ]
+
+				local invDet = 1.0 / (planeX * dirY - dirX * planeY) --required for correct matrix multiplication
+
+				local transformX = invDet * (dirY * spriteX - dirX * spriteY)
+				local transformY = invDet * (-planeY * spriteX + planeX * spriteY) --this is actually the depth inside the screen, that what Z is in 3D
+
+				local spriteScreenX = math.floor((w / 2) * (1 + transformX / transformY))
+
+				--calculate height of the sprite on screen
+				local spriteHeight = math.abs(math.floor(h / (transformY))) --using "transformY" instead of the real distance prevents fisheye
+				--calculate lowest and highest pixel to fill in current stripe
+				local drawStartY = -spriteHeight / 2 + h / 2
+				local drawEndY = spriteHeight / 2 + h / 2
+
+
+				--calculate width of the sprite
+				local spriteWidth = math.abs( math.floor (h / (transformY)))
+				local drawStartX = -spriteWidth / 2 + spriteScreenX;
+				local drawEndX = spriteWidth / 2 + spriteScreenX;
+
 
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 				drawEntityLineStart[x][entityCounter] = drawStart
 				drawEntityLineEnd[x][entityCounter] = drawEnd
-				texX = math.floor(wallX * imageWidth);
-				print("TEST ", texX)
+				texX = (x - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth
+
+				if(entityTextureX[x][entityCounter] == 0) then
+					entityTextureX[x][entityCounter] = entityTextureX[x][entityCounter] + 1
+					if entityTextureX[x][entityCounter] > imageWidth then
+						entityTextureX[x][entityCounter] = 0
+					end
+				end
 				entityTextureX[x][entityCounter] = texX
+				print("texX", texX)
+
 			end
 
 
@@ -195,7 +224,6 @@ function system.update(dt)
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 				drawFloorLineStart[x][floorCounter] = drawStart
 				drawFloorLineEnd[x][floorCounter] = drawEnd
-				print("TEST 2", texX)
 				floorTextureX[x][floorCounter] = texX
 			end
 		end
@@ -302,7 +330,6 @@ function system.draw()
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
 			if  entities[x] and entities[x][i] then
-				print(entityTextureX[x][i])
 				quad = love.graphics.newQuad(entityTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
 				love.graphics.draw(entities[x][i], quad, x, drawEntityLineStart[x][i], 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
 			end
