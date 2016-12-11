@@ -17,16 +17,15 @@ local ceiling = {}
 local system = {}
 
 system.name = "raycaster"
-
-local w = love.graphics.getWidth()/4
-local h = love.graphics.getHeight()/4
+local scaleFactor = 4
+local w = love.graphics.getWidth() / scaleFactor
+local h = love.graphics.getHeight() / scaleFactor
 local image = get_image("floor_tile")
 local imageData = image:getData()
 
 
 local ceiling = get_image("ceiling_tile")
 local ceilingData = ceiling:getData()
-
 
 local imageHeight = 128
 local imageWidth  = 64
@@ -126,7 +125,7 @@ function system.update(dt)
 		local floorCounter  = 0
 		while (hit == 0) do
 			count = count + 1
-			if count > 10 then
+			if count > 20 then
 				image_per[x] = system.wall(mapX,mapY)
 				positions_found[x]  = {mapX, mapY}
 				hit = 1
@@ -241,10 +240,7 @@ function system.update(dt)
 				floorTextureX[x][floorCounter] = texX
 			end
 		end
-		if hit==0 then
-				mapX = 1000000
-				mapY = 1000000
-		end
+
 		if (side == 0) then
 			perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
 		else
@@ -302,8 +298,6 @@ function system.update(dt)
 
 
 		--Draw to render target / canvas
-		local imageWidth = 64
-		local imageHeight = 64
 		for y = drawEnd + 1, h, 1 do
 			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
@@ -319,6 +313,7 @@ function system.update(dt)
 			if floorTexX and floorTexY then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y)
+
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + 1)
 			end
@@ -365,18 +360,8 @@ function system.unregister(entity)
 end
 function system.draw()
 	love.graphics.push()
-	love.graphics.scale(4);
-	love.graphics.setColor(200, 200, 200)
-	for x = 0, w, 1 do
-		love.graphics.line(x, 0, x, drawScreenLineStart[x])
-	end
+	love.graphics.scale(scaleFactor);
 
-
-	love.graphics.setColor(100, 100, 100)
-	for x = 0, w, 1 do
-		love.graphics.line(x, drawScreenLineEnd[x], x, h)
-		--love.graphics.line(x1, y1, x2, y2, ...)
-	end
 	love.graphics.setColor(255, 255, 255)
 
 	for x = 0, w, 1 do
@@ -412,7 +397,6 @@ function system.draw()
 
 	love.graphics.pop()
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
-
 end
 
 function love.keypressed(key, unicode)
