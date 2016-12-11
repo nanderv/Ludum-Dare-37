@@ -2,9 +2,12 @@ local ctx = GS.new()
 
 function ctx:enter(dt)
   love.mouse.setGrabbed(true)
+  love.mouse.setVisible(true)
   print('entering pause')
   ctx.MENU_BUTTONS = {}
   ctx:addButton("Resume Game", function () GS.pop() end )
+  ctx:addButton("Mouse Sensitivity +", function () game.entities.player.speed.rotate = game.entities.player.speed.rotate * 1.1 end)
+  ctx:addButton("Mouse Sensitivity -", function () game.entities.player.speed.rotate = game.entities.player.speed.rotate * 0.9 end)
   ctx:addButton("Quit Game", function () love.event.quit()end )
 end
 
@@ -31,6 +34,7 @@ function ctx:draw()
 end
 
 function ctx:leave()
+love.mouse.setVisible(false)
   print('leaving pause')
 end
 
