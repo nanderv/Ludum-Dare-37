@@ -115,9 +115,11 @@ function system.update(dt)
 		while (hit == 0) do
 			count = count + 1
 			if count > 10 then
-				image_per[x] = nil
+				image_per[x] = system.wall(mapX,mapY)
+				positions_found[x]  = {mapX, mapY}
+				hit = 1
 			 	break
-			 	end
+		 	end
 			if (sideDistX < sideDistY) then
 				sideDistX = sideDistX + deltaDistX
 				mapX = mapX + stepX
@@ -351,14 +353,16 @@ function system.draw()
 	end
 	local imageData = image:getData()
 	for x = 0, w, 1 do
+		local distWall = floorVariable[x][0]
+		local distPlayer = floorVariable[x][1]
+		local floorXWall = floorVariable[x][2]
+		local floorYWall = floorVariable[x][3]
+		local imageWidth = 64
+		local imageHeight = 64
+		local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
+		local drawEnd = drawScreenLineEnd[x]
 		for y = drawEnd + 1, h, 1 do
-			local distWall = floorVariable[x][0]
-			local distPlayer = floorVariable[x][1]
-			local floorXWall = floorVariable[x][2]
-			local floorYWall = floorVariable[x][3]
-			local imageWidth = 64
-			local imageHeight = 64
-			local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
+
 			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
 			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
@@ -367,8 +371,8 @@ function system.draw()
 			local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
 
 			local floorTexX, floorTexY;
-			floorTexX = math.floor(currentFloorX * imageWidth) % imageWidth;
-			floorTexY = math.floor(currentFloorY * imageHeight) % imageHeight;
+			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
+			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
 			--floor
 			--buffer[y][x] = (texture[3][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
@@ -383,7 +387,7 @@ function system.draw()
 			--buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
 		end
 	end
-
+	love.graphics.setColor(255, 255, 255)
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
 			if  floors[x] and floors[x][i] then
