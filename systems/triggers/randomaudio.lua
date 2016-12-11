@@ -1,22 +1,22 @@
 local system = {}
 local notes = {}
-system.name = "randomaudio"
+system.name = "rotationaudio"
 system.update = function(dt)
-  local note =  notes[math.floor(game.entities.player.position.posX)..":"..math.floor(game.entities.player.position.posY)]
-  if love.keyboard.isDown(CONTROLS.ACTION_ONE)  and  note then
-    note_image = note.note.image
-    GS.push(core.states.note)
-  end
+	for k,v in pairs(system.targets) do
+		local c = get_actuals(v)
+		if math.random()> dt * v.random.chance then
+			core.entity.add(game.entity_definitions.sound(source))
+			v.random.chance = v.random.chance * 0.7
+		end
+	end
 end
 
 system.register = function(entity)
-  notes[entity.position.x..":" .. entity.position.y] = entity
 end
 
 system.unregister = function(entity)
-  notes[entity.position.x..":" .. entity.position.y] = nil
 end
 
-system.requirements = {note=true, position=true}
+system.requirements = {triggered=true, random=true}
 
 return system

@@ -1,22 +1,25 @@
 local system = {}
 local notes = {}
-system.name = "location_audio"
+system.name = "locationaudio"
 system.update = function(dt)
-  local note =  notes[math.floor(game.entities.player.position.posX)..":"..math.floor(game.entities.player.position.posY)]
-  if love.keyboard.isDown(CONTROLS.ACTION_ONE)  and  note then
-    note_image = note.note.image
-    GS.push(core.states.note)
-  end
+	for k,v in pairs(system.targets) do
+		local c = get_actuals(v)
+		if c.x == math.floor(game.entities.player.position.posX) and c.y == math.floor(game.entities.player.position.posY) then
+			core.entity.add(game.entity_definitions.sound(source))
+			core.entity.remove(v)
+
+
+
+		end
+	end
 end
 
 system.register = function(entity)
-  notes[entity.position.x..":" .. entity.position.y] = entity
 end
 
 system.unregister = function(entity)
-  notes[entity.position.x..":" .. entity.position.y] = nil
 end
 
-system.requirements = {note=true, position=true}
+system.requirements = {triggered=true, position=true}
 
 return system
