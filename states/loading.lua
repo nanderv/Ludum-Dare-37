@@ -44,13 +44,12 @@ loading.phases = {
     function()
 
        local pl = core.entity.add(game.entity_definitions.player.player(6,1, 20))
-          core.entity.add(game.entity_definitions.wall.base_wall(1,1, "wood", "redbrick", nil, nil, nil, nil))
-          core.entity.add(game.entity_definitions.wall.base_wall(2,1, "wood", "redbrick", nil, nil, nil, nil))
+          core.entity.add(game.entity_definitions.wall.base_wall(1,1, nil, nil, nil, nil, nil, "redbrick"))
+          core.entity.add(game.entity_definitions.wall.base_wall(2,1, nil, nil, nil, nil, nil, "wood"))
           core.entity.add(game.entity_definitions.wall.base_wall(4,1, "wood", "redbrick", nil, nil, nil, nil))
           local ent = game.entity_definitions.wall.base_wall(3,1, "wood", "redbrick", nil, nil, nil, nil)
           core.entity.add(game.entity_definitions.note.note(1,1, "videogame_note1"))
           core.entity.add(ent)
-
 
     end,
     function()

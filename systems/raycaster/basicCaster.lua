@@ -62,7 +62,9 @@ function system.update(dt)
 		h = love.graphics.getHeight()/2
 	end
 	for x = 0, w, 1 do
-
+		entities[x] = {}
+		drawEntityLineStart[x] = {}
+		drawEntityLineEnd[x] = {}
 
 		floors[x] = {}
 		drawFloorLineStart[x] = {}
@@ -133,14 +135,17 @@ function system.update(dt)
 			end
 
 			if system.getEntity(mapX, mapY) then
+				print("ENTITY", system.getEntity(mapX, mapY))
+				print("ENTITY counter", entityCounter)
 				entityCounter = entityCounter + 1
 
 				entities[x][entityCounter] = system.getEntity(mapX, mapY)
-				if (side == 0) then
+				--[[if (side == 0) then
 					perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
 				else
 					perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
-				end
+				end]]--
+				perpWallDist = math.sqrt((mapX -posX) ^ 2 + (mapY - posY) ^ 2 )
 
 				lineHeight = math.abs(math.floor(h / perpWallDist))
 
@@ -242,9 +247,10 @@ function system.register(entity)
 	if entity.walls.left then
 		map[(entity.position.x-1)..":"..entity.position.y] = entity.walls.left
 	end
-		if entity.walls.right then
+	if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
+	entities[(entity.position.x)..":"..entity.position.y] = entity.walls.entity
 	floors[(entity.position.x)..":"..entity.position.y] = entity.walls.floor
 end
 
@@ -261,6 +267,7 @@ function system.unregister(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = nil
 	end
+	entities[(entity.position.x)..":"..entity.position.y] = nil
 	floors[(entity.position.x)..":"..entity.position.y] = nil
 
 end
