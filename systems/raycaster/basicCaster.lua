@@ -11,10 +11,11 @@
 
 --setup map
 local map={}
-local floor = {}
+local entities = {}
+local floors = {}
 local ceiling = {}
 local system = {}
-local entities = {}
+
 system.name = "raycaster"
 
 local w = love.graphics.getWidth()/2
@@ -27,12 +28,18 @@ local drawScreenLineStart = {}
 local drawScreenLineEnd = {}
 local drawScreenLineColor = {}
 
+local textureX = {}
+local entityTextureX = {}
+local floorTextureX = {}
+
 local drawEntityLineStart = {}
 local drawEntityLineEnd = {}
+local drawFloorLineStart = {}
+local drawFloorLineEnd = {}
 
 local positions_found = {}
 function system.hasWall(x,y)
-	return not not map[x..":"..y]
+	return not not map[x..":"..y] or not not floors[x..":"..y]
 end
 function system.wall(x,y)
 	return  get_image(map[x..":"..y])
@@ -44,16 +51,22 @@ function system.getEntity(x,y)
 	return get_image(entities[x..":"..y])
 end
 function system.getFloor(x,y)
-	return get_image(floor[x..":"..y])
+	return get_image(floors[x..":"..y])
 end
 function system.update(dt)
 	local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
 	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
 	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
 	for x = 0, w, 1 do
-		entities[x] = {}
-		drawEntityLineStart[x] = {}
-		drawEntityLineEnd[x] = {}
+
+
+		floors[x] = {}
+		drawFloorLineStart[x] = {}
+		drawFloorLineEnd[x] = {}
+
+		floorTextureX[x]  = {}
+		entityTextureX[x] = {}
+
 		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
 		local rayPosY = posY
@@ -91,10 +104,11 @@ function system.update(dt)
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY
 		end
 		local count = 0
-		local entityCounter = 0;
+		local entityCounter = 0
+		local floorCounter  = 0
 		while (hit == 0) do
 			count = count + 1
-			if count > 20 then
+			if count > 10 then
 				image_per[x] = nil
 			 	break
 			 	end
@@ -131,6 +145,40 @@ function system.update(dt)
 
 				local wallX --where exactly the wall was hit
 				if (side == 0) then
+			 		wallX = rayPosY + perpWallDist * rayDirY;
+				else
+			 		wallX = rayPosX + perpWallDist * rayDirX;
+				end
+				wallX = wallX - math.floor((wallX));
+
+
+				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
+				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
+				drawEntityLineStart[x][entityCounter] = drawStart
+				drawEntityLineEnd[x][entityCounter] = drawEnd
+				texX = math.floor(wallX * imageWidth);
+				print("TEST ", texX)
+				entityTextureX[x][entityCounter] = texX
+			end
+
+
+			if system.getFloor(mapX, mapY) then
+				floorCounter = floorCounter + 1
+
+				floors[x][floorCounter] = system.getFloor(mapX, mapY)
+				if (side == 0) then
+					perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
+				else
+					perpWallDist = math.abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY)
+				end
+
+				lineHeight = math.abs(math.floor(h / perpWallDist))
+
+				drawStart = -lineHeight / 2 + h / 2
+				drawEnd = lineHeight / 2 + h / 2
+
+				local wallX --where exactly the wall was hit
+				if (side == 0) then
 				 wallX = rayPosY + perpWallDist * rayDirY;
 				else
 				 wallX = rayPosX + perpWallDist * rayDirX;
@@ -140,8 +188,10 @@ function system.update(dt)
 				local texX = math.floor(wallX * imageWidth);
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
-				drawEntityLineStart[x][entityCounter] = drawStart
-				drawEntityLineEnd[x][entityCounter] = drawEnd
+				drawFloorLineStart[x][floorCounter] = drawStart
+				drawFloorLineEnd[x][floorCounter] = drawEnd
+				print("TEST 2", texX)
+				floorTextureX[x][floorCounter] = texX
 			end
 		end
 		if hit==0 then
@@ -169,7 +219,8 @@ function system.update(dt)
 		wallX = wallX - math.floor((wallX));
 
 		--x coordinate on the texture
-		local texX = math.floor(wallX * imageWidth);
+		texX = math.floor(wallX * imageWidth);
+		textureX[x] = texX
 		if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 		if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 		drawScreenLineStart[x] = drawStart
@@ -190,7 +241,7 @@ function system.register(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
-	entities[(entity.position.x+1)..":"..entity.position.y] = entity.walls.entity
+	floors[(entity.position.x)..":"..entity.position.y] = entity.walls.floor
 end
 
 function system.unregister(entity)
@@ -206,7 +257,7 @@ function system.unregister(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = nil
 	end
-	entities[(entity.position.x+1)..":"..entity.position.y] = nil
+	floors[(entity.position.x)..":"..entity.position.y] = nil
 
 end
 function system.draw()
@@ -226,21 +277,31 @@ function system.draw()
 	love.graphics.setColor(255, 255, 255)
 
 	for x = 0, w, 1 do
-		quad = love.graphics.newQuad((x)  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+		quad = love.graphics.newQuad((textureX[x])  % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
 		if image_per[x] then
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
 		end
 	end
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
+			if  floors[x] and floors[x][i] then
+				quad = love.graphics.newQuad(floorTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+				love.graphics.draw(floors[x][i], quad, x, drawFloorLineStart[x][i], 0, 1, (drawFloorLineEnd[x][i] - drawFloorLineStart[x][i] + 1) / imageHeight, 0, 0)
+			end
+		end
+	end
 
+
+	for x = 0, w, 1 do
+		for i = 20, 0, -1 do
 			if  entities[x] and entities[x][i] then
-
-				quad = love.graphics.newQuad((x) % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+				print(entityTextureX[x][i])
+				quad = love.graphics.newQuad(entityTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
 				love.graphics.draw(entities[x][i], quad, x, drawEntityLineStart[x][i], 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
 			end
 		end
 	end
+
 	love.graphics.pop()
 	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
 

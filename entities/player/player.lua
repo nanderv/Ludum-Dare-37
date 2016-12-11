@@ -7,6 +7,5 @@ return function(x,y, rot)
   agent.id = "player"
   agent.basic_move = {true}
   agent.speed = {movement = 5.0, rotate = 0.2, strafe = 5.0}
-
   return agent
 end

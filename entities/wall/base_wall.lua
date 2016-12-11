@@ -5,6 +5,5 @@ return function(x,y, top, bottom, left, right, floor, entity)
  	agent.name       ="wall".. id
 	agent.position   = {x=x, y=y}
 	agent.walls = {top=top, bottom = bottom, left = left, right = right, floor = floor, ceiling = ceiling, entity = entity}
-
 	return agent
 end

@@ -6,17 +6,21 @@ lightWorld = LightWorld({
   })
 
 function ctx:enter(dt)
+    note_image = love.graphics.newImage("assets/videogame_note1.png")
+    note_image = love.graphics.newImage("assets/wood.png")
+
+
   GS.push(core.states.loading)
   love.mouse.setVisible(false)
   love.mouse.setGrabbed(true)
 end
 
 function ctx:update(dt)
-  lightWorld:update(dt)
+
   if love.keyboard.isDown(CONTROLS.PAUSE) or love.keyboard.isDown(CONTROLS.ESCAPE) then
     GS.push(core.states.pause)
   end
-  --GS.push(core.states.note)
+
     for k,v in core.system.orderedPairs(game.system_categories.update) do
         v.update(dt)
     end
