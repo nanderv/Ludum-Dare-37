@@ -1,8 +1,6 @@
 SET game=Stealth_Game
 dir
-del /q build\*
-for /d %x in (build\*) do @rd /s /q "%x"
-mkdir build
+
 jar -cMf build\%game%.love *
 copy license.txt build\
 xcopy /s c:\Love2D build

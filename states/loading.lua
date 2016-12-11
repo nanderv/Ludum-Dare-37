@@ -15,10 +15,39 @@ local function load_image(url, name)
     images[name] = love.graphics.newImage(url)
   end
 end
+
 function get_image(name)
   return images[name]
-
 end
+
+local animation = {}
+local function load_animation(prefix, suffix, name)
+	if not animation[name] then
+		animation[name] = {}
+		local running = true
+		for i = 0, 1000, 1 do
+			number = string.format("%4.4d", i)
+			print("numbers", number)
+			print("test 1", prefix)
+			print("test 2", suffix)
+			print("test 3", prefix .. number .. suffix)
+			local test =  prefix .. number .. suffix
+			print("test 4", test)
+			local f=io.open(test,"r")
+			if f~=nil then
+				io.close(f)
+				animation[name][i] = love.graphics.newImage(test)
+			else
+				break
+			end
+		end
+	end
+end
+
+function get_animation(name)
+	return animation[name]
+end
+
 loading.phases = {
 
   core.reset_game,
@@ -28,6 +57,7 @@ loading.phases = {
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
 	load_image("assets/floor_tile.png", "floor_tile")
 	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade");
   end,
   require 'entities.load_all_entity_definitions',
   function()
@@ -59,7 +89,7 @@ loading.phases = {
 
 
     end,
-  
+
 }
 
 function loading:enter(from)

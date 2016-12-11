@@ -23,7 +23,6 @@ all_regions["hallway1"] =  {
 			{4,-5, nil, nil, "wood", "wood", nil, nil},
 
 		},list, bX, bY, bRot )
-
 		return (rot+ all_regions["hallway1"].end_position.rot)%4
 	end}
 
@@ -37,6 +36,8 @@ all_regions["hallway2"] =  {
 		local bRot = (rot+ entity.zone.begin_position.rot)%4
 		local bX   = x - entity.zone.begin_position.x
 		local bY   = y - entity.zone.begin_position.y
+		core.entity.add(game.entity_definitions.fadeto(2,8,8,0.7))
+
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
 		load_walls(		{
 			{0,0, "wood", "redbrick", nil, nil, nil, nil},
@@ -58,7 +59,7 @@ all_regions["hallway2"] =  {
 
 all_regions["room1"] =  {
 	begin_position     = {x=0,y=0, rot=0},
-	end_position       = {x=5,y=0, rot=0},
+	end_position       = {x=4,y=0, rot=0},
 	no_return_position = {x=10000, y=10000},
 	next_room 		   = "hallway1",
 	func               = function(list, x,y,rot, entity)
@@ -68,33 +69,33 @@ all_regions["room1"] =  {
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
 		load_walls(		{
-			{3,-3, nil,  "wood", nil, "wood", nil, nil},
-			{3,-2, nil, nil, nil, "wood", nil, nil},
-			{3,-1, nil, nil, nil, "wood", nil, nil},
-			{3, 1, nil, nil, nil, "redbrick", nil, nil},
-			{3, 2, nil, nil, nil, "redbrick", nil, nil},
-			{3, 3,  "wood", nil, nil, "redbrick", nil, nil},
+			{2,-3, nil,  "wood", nil, "wood", nil, nil},
+			{2,-2, nil, nil, nil, "wood", nil, nil},
+			{2,-1, nil, nil, nil, "wood", nil, nil},
+			{2, 1, nil, nil, nil, "redbrick", nil, nil},
+			
+			{2, 2,  "wood", nil, nil, "redbrick", nil, nil},
 
-			{-2, 3,  "wood", nil, nil, nil, nil, nil},
-			{-1, 3,  "wood", nil, nil, nil, nil, nil},
-			{ 0, 3,  "wood", nil, nil, nil, nil, nil},
-			{ 1, 3,  "wood", nil, nil, nil, nil, nil},
-			{ 2, 3,  "wood", nil, nil, nil, nil, nil},
+			{-2, 2,  "wood", nil, nil, nil, nil, nil},
+			{-1, 2,  "wood", nil, nil, nil, nil, nil},
+			{ 0, 2,  "wood", nil, nil, nil, nil, nil},
+			{ 1, 2,  "wood", nil, nil, nil, nil, nil},
+			{ 2, 2,  "wood", nil, nil, nil, nil, nil},
 			
 
-			{-3,-3, nil,  "wood", nil, "wood", nil, nil},
-			{-3,-2, nil, nil, nil, "wood", nil, nil},
-			{-3,-1, nil, nil, nil, "wood", nil, nil},
-			{-3, 0, nil, nil, nil, "wood", nil, nil},
+			{-2,-2, nil,  "wood", nil, "wood", nil, nil},
+			
+			{-2,-1, nil, nil, nil, "wood", nil, nil},
+			{-2, 0, nil, nil, nil, "wood", nil, nil},
 
-			{-3, 1, nil, nil, nil, "redbrick", nil, nil},
-			{-3, 2, nil, nil, nil, "redbrick", nil, nil},
-			{-3,  3, nil,  "wood", nil, "redbrick", nil, nil},
-			{-2, -3, nil,  "wood", nil, nil, nil, nil},
-			{-1, -3, nil,  "wood", nil, nil, nil, nil},
-			{ 0, -3, nil,  "wood", nil, nil, nil, nil},
-			{ 1, -3, nil,  "wood", nil, nil, nil, nil},
-			{ 2, -3, nil,  "wood", nil, nil, nil, nil},
+			{-2, 1, nil, nil, nil, "redbrick", nil, nil},
+			
+			{-2, 2, nil,  "wood", nil, "redbrick", nil, nil},
+			{-2, -2, nil,  "wood", nil, nil, nil, nil},
+			{-1, -2, nil,  "wood", nil, nil, nil, nil},
+			{ 0, -2, nil,  "wood", nil, nil, nil, nil},
+			{ 1, -2, nil,  "wood", nil, nil, nil, nil},
+			
 
 		},list, bX, bY, bRot )
 
