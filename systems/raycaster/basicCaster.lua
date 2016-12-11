@@ -76,7 +76,7 @@ function system.update(dt)
 	animationTime = animationTime + dt
 	if animationTime > 0.1 then
 		animationFrame = animationFrame + 1
-		animationFrame = animationFrame % 8
+		animationFrame = animationFrame % 122
 		animationTime = animationTime - 0.1
 	end
 

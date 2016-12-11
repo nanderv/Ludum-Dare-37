@@ -69,11 +69,12 @@ all_regions["room1"] =  {
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
 		load_walls(		{
+
 			{2,-3, nil,  "wood", nil, "wood", nil, nil},
 			{2,-2, nil, nil, nil, "wood", nil, nil},
 			{2,-1, nil, nil, nil, "wood", nil, nil},
 			{2, 1, nil, nil, nil, "redbrick", nil, nil},
-			
+
 			{2, 2,  "wood", nil, nil, "redbrick", nil, nil},
 
 			{-2, 2,  "wood", nil, nil, nil, nil, nil},
@@ -81,22 +82,30 @@ all_regions["room1"] =  {
 			{ 0, 2,  "wood", nil, nil, nil, nil, nil},
 			{ 1, 2,  "wood", nil, nil, nil, nil, nil},
 			{ 2, 2,  "wood", nil, nil, nil, nil, nil},
-			
+
 
 			{-2,-2, nil,  "wood", nil, "wood", nil, nil},
-			
+
 			{-2,-1, nil, nil, nil, "wood", nil, nil},
 			{-2, 0, nil, nil, nil, "wood", nil, nil},
 
 			{-2, 1, nil, nil, nil, "redbrick", nil, nil},
-			
+
 			{-2, 2, nil,  "wood", nil, "redbrick", nil, nil},
 			{-2, -2, nil,  "wood", nil, nil, nil, nil},
 			{-1, -2, nil,  "wood", nil, nil, nil, nil},
 			{ 0, -2, nil,  "wood", nil, nil, nil, nil},
 			{ 1, -2, nil,  "wood", nil, nil, nil, nil},
-			
 
+
+			{ -1, -4, "shade0", nil, nil, nil, nil, nil},
+			{ -1, -3, "shade1", nil, nil, nil, nil, nil},
+			{ -1, -2, "shade2", nil, nil, nil, nil, nil},
+			{ -1, -1, "shade3", nil, nil, nil, nil, nil},
+			{ -1, 0, "shade4", nil, nil, nil, nil, nil},
+			{ -1, 1, "shade5", nil, nil, nil, nil, nil},
+			{ -1, 2, "shade6", nil, nil, nil, nil, nil},
+			{ -1, 3, "shade6", nil, nil, nil, nil, nil},
 		},list, bX, bY, bRot )
 
 		return (rot+ all_regions["room1"].end_position.rot)%4

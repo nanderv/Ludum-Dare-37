@@ -60,10 +60,19 @@ loading.phases = {
   function()
     --load_image('assets/redbrick.png', "redbrick")
     load_image('assets/wood.png', "wood")
+	load_image("assets/redbrick.png", "redbrick")
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
 	load_image("assets/floor_tile.png", "floor_tile")
 	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "redbrick");
+
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade0");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "1.png", "shade1");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "2.png", "shade2");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "3.png", "shade3");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "4.png", "shade4");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "5.png", "shade5");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "6.png", "shade6");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "7.png", "shade7");
   end,
   require 'entities.load_all_entity_definitions',
   function()
