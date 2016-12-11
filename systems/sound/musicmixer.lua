@@ -13,12 +13,19 @@ system.tracks[4] = nil
 --system.tracks[4]:setVolume(0)
 system.tracks[5] = nil
 --system.tracks[5]:setVolume(0)
+function add_fade(entity)
+	print( entity.mix_effect.to, system.to_track, system.current_track)
+	if not (system.current_track == entity.mix_effect.to) and not (system.to_track == entity.mix_effect.to) then
+		print("add_fade")
+		core.entity.add(entity)
+	end
+end
 
-
-	
+system.to_track = 1
 local playing = false
-local current_track = 1
+system.current_track = 1
 local volume = 1
+local fadefail = false
 local up_or_down = "down"
 system.update = function(dt)
 	if not playing then
@@ -30,39 +37,46 @@ system.update = function(dt)
 
 		if up_or_down == "down" then
 			volume = volume - dt / v.mix_effect.down
-			print(volume)
+			print(v.id, system.current_track, v.mix_effect.to, volume, math.max(volume, 0), math.min(1,(1-v.mix_effect.cross)-volume))
 			if volume <= -v.mix_effect.cross then
-				volume = 0
-				system.tracks[current_track]:setVolume(0)
+				volume = 1
+				
+				system.tracks[system.current_track]:setVolume(0)
 				system.tracks[v.mix_effect.to]:setVolume(1)
 
-				up_or_down = "up"
-				--system.tracks[current_track]:stop()
-				current_track = v.mix_effect.to
-				--system.tracks[current_track]:play()
+				system.current_track = v.mix_effect.to
+				print("END OF EFFECT")
+
 				core.entity.remove(v)
-
-
 			else
-				system.tracks[current_track]:setVolume(math.min(volume,1))
-				system.tracks[v.mix_effect.to]:setVolume(math.max(0,(1-v.mix_effect.cross)-volume))
+				system.tracks[system.current_track]:setVolume(math.max(volume, 0))
+				system.tracks[v.mix_effect.to]:setVolume(math.min(1,(1-v.mix_effect.cross)-volume))
 			end
 
 
 
 		end
-
+	return
 	end
 end
 
 system.register = function(entity)
-	if current_track == entity.mix_effect.to then
-		core.entity.remove(entity)
-		return
+	print("STARTED CROSSOVER FROM ".. system.current_track .. "TO"..entity.mix_effect.to)
+	system.to_track = entity.mix_effect.to
+	print("HIER")
+	if volume ~=  1 then
+		volume = (1-entity.mix_effect.cross)-volume
+		fadefail = true
+	end
+	if entity.mix_effect.to == 1 then
+		system.tracks[1]:stop()
+		system.tracks[1]:play()
 	end
 	-- assumes only one effect is in use
 	for k,v in pairs(system.targets) do
-		core.entity.remove(v)
+		if v ~= entity then
+			v.mix_effect.down = 0.1
+		end
 	end
 end
 

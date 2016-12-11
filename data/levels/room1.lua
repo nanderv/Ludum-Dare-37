@@ -1,4 +1,4 @@
-
+local a = 1
 all_regions["hallway1"] =  {
 	begin_position     = {x=0,y=0, rot=0},
 	end_position       = {x=4,y=-5, rot=1},
@@ -23,6 +23,13 @@ all_regions["hallway1"] =  {
 			{4,-5, nil, nil, "wood", "wood", nil, nil},
 
 		},list, bX, bY, bRot )
+		a = a%2 + 1
+		
+		add_entity(game.entity_definitions.triggers.location_fade(4,0,2,6,0.7), list, entity.zone.rendered_at)
+			
+		
+		
+
 		return (rot+ all_regions["hallway1"].end_position.rot)%4
 	end}
 
@@ -36,7 +43,6 @@ all_regions["hallway2"] =  {
 		local bRot = (rot+ entity.zone.begin_position.rot)%4
 		local bX   = x - entity.zone.begin_position.x
 		local bY   = y - entity.zone.begin_position.y
-		core.entity.add(game.entity_definitions.fadeto(2,8,8,0.7))
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
 		load_walls(		{
@@ -52,7 +58,6 @@ all_regions["hallway2"] =  {
 			{4,5, nil, nil, "wood", "wood", nil, nil},
 
 		},list, bX, bY, bRot )
-
 		return (rot+ all_regions["hallway2"].end_position.rot)%4
 	end}
 
@@ -95,9 +100,10 @@ all_regions["room1"] =  {
 			{-1, -2, nil,  "wood", nil, nil, nil, nil},
 			{ 0, -2, nil,  "wood", nil, nil, nil, nil},
 			{ 1, -2, nil,  "wood", nil, nil, nil, nil},
-			
-
+						
+		
 		},list, bX, bY, bRot )
+		add_entity(game.entity_definitions.triggers.location_fade(2,0,1,2,1.1), list, entity.zone.rendered_at)
 
 		return (rot+ all_regions["room1"].end_position.rot)%4
 end}
