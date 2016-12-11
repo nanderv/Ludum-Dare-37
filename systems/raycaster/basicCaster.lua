@@ -180,16 +180,14 @@ function system.update(dt)
 
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
-				drawEntityLineStart[x][entityCounter] = drawStart
-				drawEntityLineEnd[x][entityCounter] = drawEnd
-				texX = (x - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth
-
-				if(entityTextureX[x][entityCounter] == 0) then
-					entityTextureX[x][entityCounter] = entityTextureX[x][entityCounter] + 1
-					if entityTextureX[x][entityCounter] > imageWidth then
-						entityTextureX[x][entityCounter] = 0
-					end
+				drawEntityLineStart[x][entityCounter] = drawStartY
+				drawEntityLineEnd[x][entityCounter] = drawEndY
+				if x < drawStartX or x > drawEndX then
+					texX = nil
+				else
+					texX = (x - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth
 				end
+
 				entityTextureX[x][entityCounter] = texX
 				print("texX", texX)
 
@@ -245,9 +243,9 @@ function system.update(dt)
 
 		local wallX --where exactly the wall was hit
 		if (side == 0) then
-		 wallX = rayPosY + perpWallDist * rayDirY;
+			wallX = rayPosY + perpWallDist * rayDirY;
 		else
-		 wallX = rayPosX + perpWallDist * rayDirX;
+			wallX = rayPosX + perpWallDist * rayDirX;
 		end
 		wallX = wallX - math.floor((wallX));
 
@@ -330,8 +328,10 @@ function system.draw()
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
 			if  entities[x] and entities[x][i] then
-				quad = love.graphics.newQuad(entityTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
-				love.graphics.draw(entities[x][i], quad, x, drawEntityLineStart[x][i], 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
+				if entityTextureX[x][i] then
+					quad = love.graphics.newQuad(entityTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+					love.graphics.draw(entities[x][i], quad, x, drawEntityLineStart[x][i], 0, 1, (drawEntityLineEnd[x][i] - drawEntityLineStart[x][i] + 1) / imageHeight, 0, 0)
+				end
 			end
 		end
 	end

@@ -6,7 +6,7 @@ lightWorld = LightWorld({
   })
 
 function ctx:enter(dt)
-    note_image = love.graphics.newImage("assets/videogame_note1.png")
+    note_image = love.graphics.newImage("assets/Notes/videogame_note1.png")
     note_image = love.graphics.newImage("assets/wood.png")
 
 
