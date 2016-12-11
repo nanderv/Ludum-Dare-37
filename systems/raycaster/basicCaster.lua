@@ -17,8 +17,8 @@ local system = {}
 local entities = {}
 system.name = "raycaster"
 
-local w = 0
-local h = 0
+local w = love.graphics.getWidth()/2
+local h = love.graphics.getHeight()/2
 local image = get_image("redbrick")
 local imageHeight = 128
 local imageWidth  = 64
@@ -50,10 +50,6 @@ function system.update(dt)
 	local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
 	local dirX, dirY = game.entities.player.position.dirX, game.entities.player.position.dirY
 	local planeX, planeY = game.entities.player.position.planeX, game.entities.player.position.planeY
-	if love.graphics.getWidth() then
-		w = love.graphics.getWidth()/2
-		h = love.graphics.getHeight()/2
-	end
 	for x = 0, w, 1 do
 		entities[x] = {}
 		drawEntityLineStart[x] = {}

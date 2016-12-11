@@ -7,6 +7,7 @@ lightWorld = LightWorld({
 
 function ctx:enter(dt)
   GS.push(core.states.loading)
+  love.mouse.setVisible(false)
   love.mouse.setGrabbed(true)
 end
 
