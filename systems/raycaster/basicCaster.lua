@@ -32,6 +32,8 @@ local textureX = {}
 local entityTextureX = {}
 local floorTextureX = {}
 
+local floorVariable = {}
+
 local drawEntityLineStart = {}
 local drawEntityLineEnd = {}
 local drawFloorLineStart = {}
@@ -68,6 +70,8 @@ function system.update(dt)
 
 		floorTextureX[x]  = {}
 		entityTextureX[x] = {}
+
+		floorVariable[x] = {}
 
 		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
@@ -189,7 +193,6 @@ function system.update(dt)
 				end
 
 				entityTextureX[x][entityCounter] = texX
-				print("texX", texX)
 
 			end
 
@@ -256,6 +259,37 @@ function system.update(dt)
 		if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 		drawScreenLineStart[x] = drawStart
 		drawScreenLineEnd[x] = drawEnd
+
+		--FLOOR CASTING
+		local floorXWall, floorYWall --x, y position of the floor texel at the bottom of the wall
+
+		--4 different wall directions possible
+		if(side == 0 and rayDirX > 0) then
+			floorXWall = mapX
+			floorYWall = mapY + wallX
+		elseif(side == 0 and rayDirX < 0) then
+			floorXWall = mapX + 1.0
+			floorYWall = mapY + wallX
+		elseif(side == 1 and rayDirY > 0) then
+			floorXWall = mapX + wallX
+			floorYWall = mapY
+		else
+			floorXWall = mapX + wallX
+			floorYWall = mapY + 1.0
+		end
+
+		local distWall, distPlayer
+
+		distWall = perpWallDist
+		distPlayer = 0.0
+
+		if (drawEnd < 0) then
+			drawEnd = h
+		end
+		floorVariable[x][0] = distWall
+		floorVariable[x][1] = distPlayer
+		floorVariable[x][2] = floorXWall
+		floorVariable[x][3] = floorYWall
 	end
 end
 
@@ -315,6 +349,41 @@ function system.draw()
 			love.graphics.draw(image_per[x], quad, x, drawScreenLineStart[x], 0, 1, (drawScreenLineEnd[x] - drawScreenLineStart[x] + 1) / imageHeight,  0, 0)
 		end
 	end
+	local imageData = image:getData()
+	for x = 0, w, 1 do
+		for y = drawEnd + 1, h, 1 do
+			local distWall = floorVariable[x][0]
+			local distPlayer = floorVariable[x][1]
+			local floorXWall = floorVariable[x][2]
+			local floorYWall = floorVariable[x][3]
+			local imageWidth = 64
+			local imageHeight = 64
+			local posX, posY = game.entities.player.position.posX, game.entities.player.position.posY
+			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
+
+			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+			local currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
+			local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
+
+			local floorTexX, floorTexY;
+			floorTexX = math.floor(currentFloorX * imageWidth) % imageWidth;
+			floorTexY = math.floor(currentFloorY * imageHeight) % imageHeight;
+
+			--floor
+			--buffer[y][x] = (texture[3][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
+
+			if floorTexX and floorTexY then
+				print("tex",floorTexX, floorTexY)
+				print(imageHeight, imageWidth)
+				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+				love.graphics.points(x, y)
+			end
+			--ceiling (symmetrical!)
+			--buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
+		end
+	end
+
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
 			if  floors[x] and floors[x][i] then
