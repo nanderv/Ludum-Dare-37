@@ -20,12 +20,21 @@ function get_image(name)
 
 end
 loading.phases = {
-    core.reset_game,
-    function()
-        load_image('assets/redbrick.png', "redbrick")
-        load_image('assets/wood.png', "wood")
-        load_image("assets/Notes/videogame_note1.png", "videogame_note1")
-        load_image("assets/room/walls/wall_pristine_left.png","wall_pristine_left")
+
+  core.reset_game,
+  function()
+    load_image('assets/redbrick.png', "redbrick")
+    load_image('assets/wood.png', "wood")
+    load_image("assets/Notes/videogame_note1.png", "videogame_note1")
+	load_image("assets/floor_tile.png", "floor_tile")
+	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
+  end,
+  require 'entities.load_all_entity_definitions',
+  function()
+    for k,v in pairs (loading.loaded_paths) do
+      package.loaded[v] = nil
+    end
+    collectgarbage("collect")
 
     load_image("assets/floor_tile.png", "floor")
     end,

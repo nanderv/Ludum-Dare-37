@@ -3,7 +3,7 @@ local notes = {}
 system.name = "note_detecting"
 system.update = function(dt)
   local note =  notes[math.floor(game.entities.player.position.posX)..":"..math.floor(game.entities.player.position.posY)]
-  if love.keyboard.isDown("e")  and  note then
+  if love.keyboard.isDown(CONTROLS.ACTION_ONE)  and  note then
     note_image = note.note.image
     GS.push(core.states.note)
   end

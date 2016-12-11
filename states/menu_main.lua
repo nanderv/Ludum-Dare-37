@@ -1,10 +1,10 @@
 local ctx = GS.new()
 
-function ctx:enter(dt)
-  love.mouse.setGrabbed(true)
+function ctx:enter()
   print('entering menu')
   ctx.MENU_BUTTONS = {}
   ctx:addButton("Start Game", function () GS.switch(core.states.main)end )
+  ctx:addButton("Settings", function () GS.switch(core.states.settings)end )
   ctx:addButton("Quit Game", function () love.event.quit()end )
 end
 

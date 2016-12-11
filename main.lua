@@ -1,7 +1,6 @@
 game = {}
 GS = require "zz_lib.gamestate"
 global = {}
-global.g = 2
 require 'ECS'
 core.states = require 'states'
 models = {}
