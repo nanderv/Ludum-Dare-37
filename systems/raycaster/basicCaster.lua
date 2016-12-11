@@ -320,7 +320,7 @@ function system.update(dt)
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y)
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, h-y)
+				love.graphics.points(x, h - y + 1)
 			end
 		end
 	end
