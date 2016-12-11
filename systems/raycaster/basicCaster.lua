@@ -135,7 +135,7 @@ function system.update(dt)
 
 				entities[x][entityCounter] = system.getEntity(mapX, mapY)
 
-				perpWallDist = math.sqrt((mapX -posX) ^ 2 + (mapY - posY) ^ 2 )
+				perpWallDist = math.sqrt((mapX - posX) ^ 2 + (mapY - posY) ^ 2 )
 
 				lineHeight = math.abs(math.floor(h / perpWallDist))
 
@@ -150,8 +150,8 @@ function system.update(dt)
 				end
 				wallX = wallX - math.floor((wallX));
 
-				local spriteX = mapX - posX;
-				local spriteY = mapY - posY;
+				local spriteX = mapX + 0.5 - posX;
+				local spriteY = mapY + 0.5 - posY;
 
 				---transform sprite with the inverse camera matrix
 				-- [ planeX   dirX ] -1                                       [ dirY      -dirX ]
