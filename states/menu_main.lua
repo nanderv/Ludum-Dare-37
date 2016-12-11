@@ -1,61 +1,47 @@
 local ctx = GS.new()
 
 function ctx:enter()
+  ctx.quickie = require 'zz_lib.quickie'
+  love.mouse.setVisible(true)
+  love.mouse.setGrabbed(false)
   print('entering menu')
-  ctx.MENU_BUTTONS = {}
-  ctx:addButton("Start Game", function () GS.switch(core.states.main)end )
-  ctx:addButton("Settings", function () GS.switch(core.states.settings)end )
-  ctx:addButton("Quit Game", function () love.event.quit()end )
+  ctx.MENU_BUTTONS = {
+    {label = "Start Game", func = function () GS.switch(core.states.main)end },
+    {label = "Settings", func = function() end },
+    {label = "Quit Game", func = function () love.event.quit()end }
+  }
+end
+
+function ctx:leave()
+  package.loaded['zz_lib.quickie'] = nil
+  print('leaving menu')
 end
 
 function ctx:update(dt)
-  local x, y = love.mouse.getPosition()
   for i, v in ipairs(ctx.MENU_BUTTONS) do
-    if (ctx:mouseOverButton(x,y,v["x"],v["y"],v["width"],v["height"])) then
-      v["opacity"] = 255
-    else
-      v["opacity"] = 180
+    local x, y, dx, dy = ctx.getPosition(i)
+    local button = ctx.quickie.Button(v.label, x,y,dx,dy)
+    if button.hit then
+      if v.label == "Settings" then
+        v.label = "(please start Game first)"
+      else
+        v.func()
+      end
     end
   end
 end
 
 function ctx:draw()
-  -- love.graphics.setColor(50,50,50,200)
-  -- love.graphics.rectangle("fill", 100,love.graphics.getHeight()/2,love.graphics.getWidth() - 200,love.graphics.getHeight()/2)
-  for i,v in ipairs(ctx.MENU_BUTTONS) do
-    love.graphics.setColor(200,100,100,v["opacity"])
-    love.graphics.rectangle("fill", v["x"],v["y"],v["width"],v["height"])
-    love.graphics.setColor(200,200,200,255)
-    love.graphics.print(v["label"], v["x"]+130,v["y"]+15)
-  end
+  ctx.quickie.draw()
 end
 
-function ctx:leave()
-  print('leaving menu')
-end
-
-function ctx:mouseOverButton(pointX,pointY,rectX,rectY,rectWidth,rectHeight)
-  return pointX > rectX and pointY > rectY and pointX < rectX + rectWidth and pointY < rectY + rectHeight
-end
-
-function ctx:addButton(label,func)
-  ctx.MENU_BUTTONS[#ctx.MENU_BUTTONS + 1] = {
-    label = label,
-    x = love.graphics.getWidth()/2 - 340/2,
-    y = 250 + (#ctx.MENU_BUTTONS * 50),
-    width = 340,
-    height = 40,
-    opacity = 100,
-    func = func
-  }
-end
-
-function ctx:mousepressed()
-  for i, v in ipairs(ctx.MENU_BUTTONS) do
-    if (ctx:mouseOverButton(love.mouse.getX(),love.mouse.getY(),v["x"],v["y"],v["width"],v["height"])) then
-      v["func"]()
-    end
-  end
+function ctx.getPosition(index)
+  local width = 340
+  local height = 50
+  local v_gap = 20
+  local x = love.graphics.getWidth()/2 - width/2
+  local y = 250 + (index * height) + (index * v_gap)
+  return x, y, width, height
 end
 
 return ctx

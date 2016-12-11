@@ -44,7 +44,7 @@ system.update = function(dt)
       end
     end
 
-    rotSpeed = dt * v.speed.rotate * 10
+    rotSpeed = dt * v.speed.keyboard_rotate
     -- right
     if love.keyboard.isDown(CONTROLS.ROT_RIGHT) then
       local oldDirX = dirX

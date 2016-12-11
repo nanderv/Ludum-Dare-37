@@ -6,14 +6,13 @@ lightWorld = LightWorld({
   })
 
 function ctx:enter(dt)
-
   GS.push(core.states.loading)
   love.mouse.setVisible(false)
   love.mouse.setGrabbed(true)
+  print('entering game')
 end
 
 function ctx:update(dt)
-
   if love.keyboard.isDown(CONTROLS.PAUSE) or love.keyboard.isDown(CONTROLS.ESCAPE) then
     GS.push(core.states.pause)
   end
@@ -36,8 +35,6 @@ function ctx:draw()
 end
 
 function ctx:leave()
-  love.mouse.setVisible(true)
-  love.mouse.setGrabbed(false)
-  print('leaving')
+  print('leaving game')
 end
 return ctx

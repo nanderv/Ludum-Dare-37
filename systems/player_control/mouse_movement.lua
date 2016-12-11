@@ -18,7 +18,7 @@ system.update = function(dt)
     planeX = v.position.planeX
     planeY = v.position.planeY
 
-    rotSpeed = dt * v.speed.rotate * math.abs(dx)
+    rotSpeed = dt * v.speed.mouse_rotate * math.abs(dx)
     -- right
     if dx > 0 then
       local oldDirX = dirX

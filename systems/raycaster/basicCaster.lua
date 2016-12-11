@@ -207,6 +207,7 @@ function system.update(dt)
 				end
 
 				entityTextureX[x][entityCounter] = texX
+
 			end
 
 
@@ -320,7 +321,7 @@ function system.update(dt)
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y)
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, h - y + 1)
+				love.graphics.points(x, h-y)
 			end
 		end
 	end
@@ -340,7 +341,6 @@ function system.register(entity)
 	if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = entity.walls.right
 	end
-
 	entities[(entity.position.x)..":"..entity.position.y] = entity.walls.entity
 	floors[(entity.position.x)..":"..entity.position.y] = entity.walls.floor
 end
@@ -358,7 +358,6 @@ function system.unregister(entity)
 		if entity.walls.right then
 		map[(entity.position.x+1)..":"..entity.position.y] = nil
 	end
-
 	entities[(entity.position.x)..":"..entity.position.y] = nil
 	floors[(entity.position.x)..":"..entity.position.y] = nil
 
