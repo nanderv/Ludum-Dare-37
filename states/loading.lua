@@ -10,6 +10,7 @@ function my_require (str)
   return require (str)
 end
 local images = {}
+
 local function load_image(url, name)
   if not images[name] then
     images[name] = love.graphics.newImage(url)
@@ -35,6 +36,7 @@ local function load_animation(prefix, suffix, name)
 			print("test 4", test)
 			local f=io.open(test,"r")
 			if f~=nil then
+				print("test nil")
 				io.close(f)
 				animation[name][i] = love.graphics.newImage(test)
 			else
@@ -44,20 +46,33 @@ local function load_animation(prefix, suffix, name)
 	end
 end
 
-function get_animation(name)
-	return animation[name]
+function get_animation(name, frame)
+	if animation[name] then
+		return animation[name][frame]
+	else
+		return nil
+	end
 end
 
 loading.phases = {
 
   core.reset_game,
   function()
-    load_image('assets/redbrick.png', "redbrick")
+    --load_image('assets/redbrick.png', "redbrick")
     load_image('assets/wood.png', "wood")
+	load_image("assets/redbrick.png", "redbrick")
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
-	load_image("assets/floor_tile.png", "floor_tile")
+	load_image("assets/floor_tile_blood2.png", "floor_tile")
 	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade");
+
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade0");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "1.png", "shade1");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "2.png", "shade2");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "3.png", "shade3");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "4.png", "shade4");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "5.png", "shade5");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "6.png", "shade6");
+	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "7.png", "shade7");
   end,
   require 'entities.load_all_entity_definitions',
   function()

@@ -74,34 +74,44 @@ all_regions["room1"] =  {
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
 		load_walls(		{
+
 			{2,-3, nil,  "wood", nil, "wood", nil, nil},
 			{2,-2, nil, nil, nil, "wood", nil, nil},
 			{2,-1, nil, nil, nil, "wood", nil, nil},
 			{2, 1, nil, nil, nil, "redbrick", nil, nil},
-			
+
 			{2, 2,  "wood", nil, nil, "redbrick", nil, nil},
 
-			{-2, 2,  "wood", nil, nil, nil, nil, nil},
-			{-1, 2,  "wood", nil, nil, nil, nil, nil},
-			{ 0, 2,  "wood", nil, nil, nil, nil, nil},
-			{ 1, 2,  "wood", nil, nil, nil, nil, nil},
-			{ 2, 2,  "wood", nil, nil, nil, nil, nil},
-			
+			{-2, 4,  "wood", nil, nil, nil, nil, nil},
+			{-1, 4,  "wood", nil, nil, nil, nil, nil},
+			{ 0, 4,  "wood", nil, nil, nil, nil, nil},
+			{ 1, 4,  "wood", nil, nil, nil, nil, nil},
+			{ 2, 4,  "wood", nil, nil, nil, nil, nil},
+
 
 			{-2,-2, nil,  "wood", nil, "wood", nil, nil},
-			
+
 			{-2,-1, nil, nil, nil, "wood", nil, nil},
 			{-2, 0, nil, nil, nil, "wood", nil, nil},
 
 			{-2, 1, nil, nil, nil, "redbrick", nil, nil},
-			
-			{-2, 2, nil,  "wood", nil, "redbrick", nil, nil},
-			{-2, -2, nil,  "wood", nil, nil, nil, nil},
-			{-1, -2, nil,  "wood", nil, nil, nil, nil},
-			{ 0, -2, nil,  "wood", nil, nil, nil, nil},
-			{ 1, -2, nil,  "wood", nil, nil, nil, nil},
-						
-		
+
+
+			{-2, -4, nil,  "wood", nil, "redbrick", nil, nil},
+			{-2, -4, nil,  "wood", nil, nil, nil, nil},
+			{-1, -4, nil,  "wood", nil, nil, nil, nil},
+			{ 0, -4, nil,  "wood", nil, nil, nil, nil},
+			{ 1, -4, nil,  "wood", nil, nil, nil, nil},
+
+
+			{ -1, -4, "shade0", nil, nil, nil, nil, nil},
+			{ -1, -3, "shade1", nil, nil, nil, nil, nil},
+			{ -1, -2, "shade2", nil, nil, nil, nil, nil},
+			{ -1, -1, "shade3", nil, nil, nil, nil, nil},
+			{ -1, 0, "shade4", nil, nil, nil, nil, nil},
+			{ -1, 1, "shade5", nil, nil, nil, nil, nil},
+			{ -1, 2, "shade6", nil, nil, nil, nil, nil},
+			{ -1, 3, "shade7", nil, nil, nil, nil, nil},
 		},list, bX, bY, bRot )
 		add_entity(game.entity_definitions.triggers.location_fade(2,0,1,2,1.1), list, entity.zone.rendered_at)
 

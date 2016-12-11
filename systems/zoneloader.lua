@@ -6,7 +6,7 @@ local     function pack(...)
 function load_walls(wall_list, list, bx, by, brot)
 	for k,v in pairs(wall_list) do
 
-		
+
 
 		local ent = game.entity_definitions.wall.base_wall(v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8])
 		local axx, bxx =  ent.position.x, ent.position.y
@@ -71,25 +71,26 @@ local old_zone = nil
 local detected_zone = nil
 system.name = "zoneloader"
 system.update = function(dt)
-	
+
 	if current_zone then
-		
+
 		local a,b = get_actual_coords(current_zone.zone.rendered_at, current_zone.zone.no_return_position)
 
 		local x, y = math.floor(game.entities.player.position.posX), math.floor(game.entities.player.position.posY)
-		if  a == x and b == y and detected_zone ~= current_zone then
-			detected_zone = current_zone
-			if prev_zone then
-				core.entity.remove(prev_zone)
-			end
-			if old_zone then
-				core.entity.remove(old_zone)
-			end
-			prev_zone = game.entity_definitions.zone("room1")
-			prev_zone.zone.is_prev = true
-			core.entity.add(prev_zone)
 
-		end
+			if  a == x and b == y and detected_zone ~= current_zone then
+				detected_zone = current_zone
+				if prev_zone then
+					core.entity.remove(prev_zone)
+				end
+				if old_zone then
+					core.entity.remove(old_zone)
+				end
+				prev_zone = game.entity_definitions.zone("room1")
+				prev_zone.zone.is_prev = true
+				core.entity.add(prev_zone)
+			end
+
 		local a,b = get_actual_coords(current_zone.zone.rendered_at, current_zone.zone.end_position)
 
 		if a == x and b == y then
@@ -103,7 +104,7 @@ system.update = function(dt)
 
 
 	end
-	
+
 end
 
 system.register = function(entity)

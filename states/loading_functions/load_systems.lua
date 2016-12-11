@@ -14,6 +14,6 @@ return function()
         core.system.add( my_require 'systems.triggers.location_fade',  {"update"})
         my_require 'data.levels.room1'
 
-        core.entity.add(game.entity_definitions.zone("room1")        )
+        core.entity.add(game.entity_definitions.zone("room1"))
 
 end
