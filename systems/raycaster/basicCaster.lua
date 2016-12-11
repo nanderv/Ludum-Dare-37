@@ -207,11 +207,6 @@ function system.update(dt)
 				end
 
 				entityTextureX[x][entityCounter] = texX
-<<<<<<< HEAD
-				-- print("texX", texX)
-=======
->>>>>>> e520b2991ad394052eddf3f47ac2cd0e0fff317a
-
 			end
 
 
