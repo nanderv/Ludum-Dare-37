@@ -14,6 +14,10 @@ function get_actuals(entity)
 end
 function add_entity(entity, list, a)
 	local x,y =  get_actual_coords(a, entity.position)
+	
+	if entity.position then
+		entity.position.x,entity.position.y = x,y
+	end
 
 	actual_coords[entity] = {x=x,y=y}
 	core.entity.add(entity)
