@@ -23,7 +23,7 @@ local h = love.graphics.getHeight() / scaleFactor
 local image = get_image("floor_tile")
 local imageData = image:getData()
 
-local collapsedValue = 0 --set to around 5 to create effect of floor and ceiling coming toward each other in the distance
+local collapsedValue = 0 --set to around 5 to 10 to create effect of floor and ceiling coming toward each other in the distance
 
 local ceiling = get_image("ceiling_tile")
 local ceilingData = ceiling:getData()
@@ -61,23 +61,36 @@ local positions_found = {}
 function system.hasWall(x,y)
 	return not not map[x..":"..y] or not not floors[x..":"..y]
 end
+
 function system.wall(x,y)
 	return  get_animation(map[x..":"..y], animationFrame) or get_image(map[x..":"..y])
 end
 
-function system.wall_animated(x,y)
-	return get_animation(map[x..":"..y])
-end
-
+--return ceiling texture
 function system.getCeiling(x,y)
 	return get_image(ceiling[x..":"..y])
 end
-function system.getEntity(x,y)
-	return get_image(entities[x..":"..y])
-end
+
+--return floor texture actual ground texture
 function system.getFloor(x,y)
 	return get_image(floors[x..":"..y])
 end
+
+--return texture for rotating floats
+function system.getEntity(x,y)
+	return get_image(entities[x..":"..y])
+end
+
+function
+
+function getPhysicalSide(x, y)
+	return get_image(entities[math.floor(x)..":"..math.floor(y)])
+end
+
+function getPhysicalTop(x, y)
+	return get_image(entities[math.floor(x)..":"..math.floor(y)])
+end
+
 function system.update(dt)
 	animationTime = animationTime + dt
 	if animationTime > 0.1 then
