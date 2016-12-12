@@ -2,8 +2,8 @@ all_regions = {}
 local     function pack(...)
         return arg
     end
+
 function load_walls(wall_list, list, bx, by, brot)
-	print(list, brot)
 	for k,v in pairs(wall_list) do
 		local ent = game.entity_definitions.wall.base_wall(v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8])
 		local axx, bxx =  ent.position.x, ent.position.y
@@ -27,7 +27,22 @@ function load_walls(wall_list, list, bx, by, brot)
 	end
 end
 
-local function get_actual_coords(rel, pos, rev)
+local actual_coords = {}
+
+function get_actuals(entity)
+	return actual_coords[entity]
+end
+function add_entity(entity, list, a)
+	local x,y =  get_actual_coords(a, entity.position)
+
+	actual_coords[entity] = {x=x,y=y}
+	core.entity.add(entity)
+	list[#list+1] = entity
+end
+function get_actual_coords(rel, pos)
+	if rel == nil then
+		rel = current_zone.zone.rendered_at
+	end
 		local x,y = pos.x,pos.y
 			if rel.rot == 1 then
 				x,y = y, -x
@@ -40,9 +55,7 @@ local function get_actual_coords(rel, pos, rev)
 			end
 			if not rev then
 				return x + rel.x, y + rel.y
-			else
 
-				return x - rel.x, y - rel.y
 			end
 end
 local system = {}
