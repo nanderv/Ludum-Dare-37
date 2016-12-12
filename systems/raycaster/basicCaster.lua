@@ -365,24 +365,25 @@ function system.update(dt)
 
 			imageData = image:getData()
 			if floorTexX and floorTexY then
-				if  floorTexX > 0 then
-				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y - collapsedValue -raiseFloor)
-
-				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, h - y + collapsedValue)
-				if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
-					imageData = ceiling:getData()
-					raiseFloor = getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) / currentDist
+				if  floorTexX >= 0 then
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, y - collapsedValue -raiseFloor)
 
-					--these line below might be removed without problem? (Jaimie)
-					--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-					--love.graphics.points(x, h - y + collapsedValue)
+					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+					love.graphics.points(x, h - y + collapsedValue)
+					if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
+						imageData = ceiling:getData()
+						raiseFloor = getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) / currentDist
+						love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+						love.graphics.points(x, y - collapsedValue -raiseFloor)
+
+						--these line below might be removed without problem? (Jaimie)
+						--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+						--love.graphics.points(x, h - y + collapsedValue)
+					end
+				else
+					
 				end
-			else
-			end
 			end
 		end
 	end
