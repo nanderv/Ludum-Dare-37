@@ -24,12 +24,12 @@ all_regions["room1"] =  {
 			{1,1,"wall1"},
 			{-1,1,"wall1"},
 			{1,0,"wall1"},
-			
+
 			{-1,0,"wall1"},
 			{-1,-1,"wall1"},
 			{0,-1,"wall1"},
 			{1,-1,"wall1"},
-			
+
 			}
 		, list, entity.zone.rendered_at)
 		add_floors_ceilings({
@@ -45,8 +45,10 @@ all_regions["room1"] =  {
 		add_entity(game.entity_definitions.triggers.location_audio(2,0,"staywithus1"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"notanywhere1"), list, entity.zone.rendered_at)
-add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)
-		
+		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)
+
+		add_entity({game.entity_definitions.objs.entity(0, 3, "wall1","wall1")}, list, entity.zone.rendered_at)
+		add_entity({game.entity_definitions.objs.physical_object(0, 2, "wall1","wall1", 32)}, list, entity.zone.rendered_at)
 
 		return (rot+ all_regions["room1"].end_position.rot)%4
 end}
@@ -119,4 +121,3 @@ all_regions["hallway1_2"] =  {
 		},list, bX, bY, bRot )
 		return (rot+ all_regions["hallway1_2"].end_position.rot)%4
 	end}
-
