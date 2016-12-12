@@ -5,11 +5,11 @@
 
 
 
-all_regions["hallway_test"] =  {
+all_regions["hallway_1_9"] =  {
 	begin_position     = {x=0,y=0, rot=0},
 	end_position       = {x=-4,y=16, rot=3},
-	no_return_position = {x=-3, y=16},
-	next_room 		   = "hallway_test",
+	no_return_position = {x=-4, y=16},
+	next_room 		   = "room2",
 	func               = function(list, x,y,rot, entity)
 		--a
 		local bRot = (rot+ entity.zone.begin_position.rot)%4
@@ -69,5 +69,5 @@ all_regions["hallway_test"] =  {
 
 
 
-		return (rot+ all_regions["hallway_test"].end_position.rot)%4
+		return (rot+ all_regions["hallway_1_9"].end_position.rot)%4
 	end}
