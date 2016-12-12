@@ -337,18 +337,23 @@ function system.update(dt)
 			--print("floor", currentFloorX, currentFloorY)
 			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
-			if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
-				imageData = ceiling:getData()
-				raiseFloor = 20 / currentDist
-			else
-				imageData = image:getData()
-			end
+
+			imageData = image:getData()
 			if floorTexX and floorTexY then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue -raiseFloor)
 
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
+				if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
+					imageData = ceiling:getData()
+					raiseFloor = 20 / currentDist
+					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+					love.graphics.points(x, y - collapsedValue -raiseFloor)
+
+					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+					love.graphics.points(x, h - y + collapsedValue)
+				end
 			end
 		end
 	end
