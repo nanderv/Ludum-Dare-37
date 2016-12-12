@@ -20,7 +20,7 @@ system.name = "raycaster"
 local scaleFactor = 4
 local w = love.graphics.getWidth() / scaleFactor
 local h = love.graphics.getHeight() / scaleFactor
-local image = get_image("floor_tile")
+local image = get_image("wall1")
 local imageData = image:getData()
 
 local collapsedValue = 0 --set to around 5 to 10 to create effect of floor and ceiling coming toward each other in the distance
@@ -55,26 +55,32 @@ local drawPhysicalLineEnd = {}
 
 local positions_found = {}
 function system.hasWall(x,y)
-	return not not map[x..":"..y] or not not floors[x..":"..y]
+	return not not game___objs.wall[x..":"..y]
+end
+function system.hasPhysical(x,y)
+	return not not game___objs.physical_side[math.floor(x)..":"..math.floor(y)]
+end
+function system.canWalkThrough(x,y)
+	return not not game___objs.wall[x..":"..y] or not not game___objs.physical_side[x..":"..y]
 end
 
 function system.wall(x,y)
-	return  get_animation(map[x..":"..y], animationFrame) or get_image(map[x..":"..y])
+	return  get_animation(game___objs.wall[x..":"..y], animationFrame) or get_image(game___objs.wall[x..":"..y])
 end
 
 --return ceiling texture
 function system.getCeiling(x,y)
-	return get_image(ceiling[x..":"..y])
+	return get_image(game___objs.ceiling[x..":"..y])
 end
 
 --return floor texture actual ground texture
 function system.getFloor(x,y)
-	return get_image(floors[x..":"..y])
+	return get_image(game___objs.floor[x..":"..y])
 end
 
 --return texture for rotating floats
 function system.getEntity(x,y)
-	return get_image(entities[x..":"..y])
+	return get_image(game___objs.entity[x..":"..y])
 end
 
 --physical objects, as in beds, and tables
@@ -84,11 +90,15 @@ function system.getPhysicalHeight(x, y)
 end
 
 function system.getPhysicalSide(x,y)
-	return get_image(entities[math.floor(x)..":"..math.floor(y)])
+	return get_image(game___objs.physical_side[math.floor(x)..":"..math.floor(y)])
 end
 
 function system.getPhysicalTop(x, y)
-	return get_image(entities[math.floor(x)..":"..math.floor(y)])
+	return get_image(game___objs.physical_top[math.floor(x)..":"..math.floor(y)])
+end
+
+function system.getPhysicalHeight(x, y)
+	return get_image(game___objs.physical_height[math.floor(x)..":"..math.floor(y)])
 end
 
 --used to distinct between walls and beds, both return false here
@@ -181,7 +191,7 @@ function system.update(dt)
 				side = 1
 			end
 
-			if (system.hasWall(mapX,mapY) and not floors[mapX..":"..mapY]) then
+			if system.hasWall(mapX,mapY) then
 				hit = 1
 				--print("wall", system.wall(mapX,mapY))
 				image_per[x] = system.wall(mapX,mapY)
@@ -251,8 +261,7 @@ function system.update(dt)
 
 			end
 
-
-			if system.hasPhysical(x, y) then
+			if system.hasPhysical(mapX, mapY) then
 				physicalCounter = physicalCounter + 1
 
 				physicalSide[x][physicalCounter] = system.getPhysicalSide(mapX, mapY)
@@ -357,7 +366,7 @@ function system.update(dt)
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
 			if floorTexX and floorTexY then
-				local floorData = system.getFloor:getData()
+				local floorData = system.getFloor(x,y):getData()
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue)
 
@@ -434,7 +443,7 @@ function system.draw()
 	love.graphics.setColor(255, 255, 255)
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
-			if  floors[x] and floors[x][i] then
+			if  physicalSide[x] and physicalSide[x][i] then
 				quad = love.graphics.newQuad(physicalTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
 				love.graphics.draw(floors[x][i], quad, x, drawPhysicalLineStart[x][i], 0, 1, (drawPhysicalLineEnd[x][i] - drawPhysicalLineStart[x][i] + 1) / imageHeight, 0, 0)
 			end
