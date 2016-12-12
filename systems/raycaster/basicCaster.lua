@@ -365,13 +365,14 @@ function system.update(dt)
 			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
-			if system.hasPhysical(math.floor(currentFloorX), math.floor(currentFloorY)) and floorTexX and floorTexY then
+			if not system.hasWall(math.floor(currentFloorX), math.floor(currentFloorY)) and floorTexX and floorTexY then
 				print("text X and Y", math.floor(currentFloorX), math.floor(currentFloorY))
+				if  system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)) then
 				local floorData = system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
 				love.graphics.setColor(floorData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue)
 
-				local ceilingData = system.getCeiling(currentFloorX, currentFloorY):getData()
+				local ceilingData = system.getCeiling(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
 
@@ -386,6 +387,7 @@ function system.update(dt)
 					love.graphics.points(x, h - y + collapsedValue)
 					]]--
 				end
+			end
 			end
 		end
 	end
