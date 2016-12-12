@@ -378,7 +378,7 @@ function system.update(dt)
 						if system.getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) then
 							raiseFloor = system.getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) / currentDist
 						else
-							raiseFloor = 20
+							raiseFloor = 20 / currentDist
 						end
 						love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 						love.graphics.points(x, y - collapsedValue -raiseFloor)
