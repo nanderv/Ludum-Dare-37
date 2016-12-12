@@ -364,7 +364,7 @@ function system.update(dt)
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
 			imageData = image:getData()
-			if floorTexX and floorTexY then
+			if floorTexX and floorTexY and floorTexX > 0 then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue -raiseFloor)
 
