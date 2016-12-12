@@ -1,7 +1,8 @@
 local a = 1
 function add_walls(ccs, list, zone)
 	for k,v in pairs(ccs) do
-			add_entity(game.entity_definitions.objs.wall(ccs[1], ccs[2], ccx[3]), list, zone)
+		print("HOI")
+			add_entity(game.entity_definitions.objs.wall(v[1], v[2], v[3]), list, zone)
 	end
 end
 
@@ -17,10 +18,15 @@ all_regions["room1"] =  {
 		local bY   = y - entity.zone.begin_position.y
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
-		add_entity({
-			{3,1,"wall1"},
-			{4,1,"wall1"},
-			{5,1,"wall1"}
+		add_walls({
+			{1,1,"wall1"},
+			{0,1,"wall1"},
+			{-1,1,"wall1"},
+			{-1,0,"wall1"},
+			{-1,-1,"wall1"},
+			{0,-1,"wall1"},
+			{1,-1,"wall1"},
+			{1,0,"wall1"},
 
 
 		}
@@ -105,3 +111,4 @@ all_regions["hallway1_2"] =  {
 		},list, bX, bY, bRot )
 		return (rot+ all_regions["hallway1_2"].end_position.rot)%4
 	end}
+

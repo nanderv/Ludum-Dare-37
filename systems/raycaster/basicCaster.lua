@@ -69,7 +69,7 @@ function system.hasWall(x,y)
 	return not not game___objs.wall[x..":"..y]
 end
 function system.hasPhysical(x,y)
-	return not not game___objs.physical_side[x..":"..y]
+	return not not game___objs.physical_side[math.floor(x)..":"..math.floor(y)]
 end
 function system.canWalkThrough(x,y)
 	return not not game___objs.wall[x..":"..y] or not not game___objs.physical_side[x..":"..y]
@@ -369,8 +369,7 @@ function system.update(dt)
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
 			imageData = image:getData()
-			if floorTexX and floorTexY then
-				print(floorTexX, floorTexY)
+			if floorTexX and floorTexY and floorTexX >0 and floorTexY >0 then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue -raiseFloor)
 
