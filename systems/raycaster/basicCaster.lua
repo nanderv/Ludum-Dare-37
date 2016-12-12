@@ -86,7 +86,7 @@ end
 --physical objects, as in beds, and tables
 --
 function system.getPhysicalHeight(x, y)
-	return entities[x..":"..y].height or 36 --remove or 36 when implemented
+	return entities[x..":"..y].height or 20 --remove or 36 when implemented
 end
 
 function system.getPhysicalSide(x,y)
@@ -348,7 +348,7 @@ function system.update(dt)
 			drawEnd = h
 		end
 
-		for y = drawEnd + 1-5, h + collapsedValue, 1 do
+		for y = drawEnd + 1 - collapsedValue, h + collapsedValue, 1 do
 			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
 			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
@@ -365,24 +365,25 @@ function system.update(dt)
 
 			imageData = image:getData()
 			if floorTexX and floorTexY then
-				if  floorTexX > 0 then
-				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y - collapsedValue -raiseFloor)
-
-				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, h - y + collapsedValue)
-				if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
-					imageData = ceiling:getData()
-					raiseFloor = 20 / currentDist
+				if  floorTexX >= 0 then
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, y - collapsedValue -raiseFloor)
 
-					--these line below might be removed without problem? (Jaimie)
-					--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-					--love.graphics.points(x, h - y + collapsedValue)
+					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+					love.graphics.points(x, h - y + collapsedValue)
+					if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
+						imageData = ceiling:getData()
+						raiseFloor = getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) / currentDist
+						love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+						love.graphics.points(x, y - collapsedValue -raiseFloor)
+
+						--these line below might be removed without problem? (Jaimie)
+						--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+						--love.graphics.points(x, h - y + collapsedValue)
+					end
+				else
+					
 				end
-			else
-			end
 			end
 		end
 	end
