@@ -348,8 +348,6 @@ function system.update(dt)
 			drawEnd = h
 		end
 
-
-		--Draw to render target / canvas
 		for y = drawEnd + 1-5, h + collapsedValue, 1 do
 			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
@@ -365,29 +363,22 @@ function system.update(dt)
 			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
-			if not system.hasWall(math.floor(currentFloorX), math.floor(currentFloorY)) and floorTexX and floorTexY then
-				print("text X and Y", math.floor(currentFloorX), math.floor(currentFloorY))
-				if  system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)) then
-				local floorData = system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
-				love.graphics.setColor(floorData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y - collapsedValue)
+			imageData = image:getData()
+			if floorTexX and floorTexY then
+				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+				love.graphics.points(x, y - collapsedValue -raiseFloor)
 
-				local ceilingData = system.getCeiling(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
-
-				if system.hasPhysical(x, y) then
-					local topData = getPhysicalTop():getData()
-					raiseFloor = system.getPhysicalHeight(currentFloorX, currentFloorY) / currentDist
+				if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
+					imageData = ceiling:getData()
+					raiseFloor = 20 / currentDist
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, y - collapsedValue -raiseFloor)
-					--I (Jaimie) Believe that one of this can be commented out
-					--[[
+
 					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, h - y + collapsedValue)
-					]]--
 				end
-			end
 			end
 		end
 	end
@@ -448,7 +439,7 @@ function system.draw()
 		for i = 20, 0, -1 do
 			if  physicalSide[x] and physicalSide[x][i] then
 				quad = love.graphics.newQuad(physicalTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
-				love.graphics.draw(floors[x][i], quad, x, drawPhysicalLineStart[x][i], 0, 1, (drawPhysicalLineEnd[x][i] - drawPhysicalLineStart[x][i] + 1) / imageHeight, 0, 0)
+				love.graphics.draw(physicalSide[x][i], quad, x, drawPhysicalLineStart[x][i], 0, 1, (drawPhysicalLineEnd[x][i] - drawPhysicalLineStart[x][i] + 1) / imageHeight, 0, 0)
 			end
 		end
 	end
