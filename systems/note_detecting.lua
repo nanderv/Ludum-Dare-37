@@ -9,6 +9,14 @@ system.update = function(dt)
   end
 end
 
+function system.draw()
+  local note =  notes[math.floor(game.entities.player.position.posX)..":"..math.floor(game.entities.player.position.posY)]
+  	if   note then
+  		love.graphics.print("Open note",200,400)
+  	end
+
+end
+
 system.register = function(entity)
   notes[entity.position.x..":" .. entity.position.y] = entity
 end
