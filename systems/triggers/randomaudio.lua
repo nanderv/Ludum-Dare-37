@@ -4,14 +4,20 @@ system.name = "rotationaudio"
 system.update = function(dt)
 	for k,v in pairs(system.targets) do
 		local c = get_actuals(v)
-		if math.random()> dt * v.random.chance then
-			core.entity.add(game.entity_definitions.sound(source))
-			v.random.chance = v.random.chance * 0.7
+		if math.random()*2 < dt then
+			print("FST")
+		  if math.random()*2 < v.random.chance then
+		  	print("HERE")
+			add_effect(game.entity_definitions.sound(v.triggered.source))
+			v.random.already = 0
+			v.random.chance = v.random.chance * 1.2
 		end
+	end
 	end
 end
 
 system.register = function(entity)
+	entity.random.already = 0
 end
 
 system.unregister = function(entity)

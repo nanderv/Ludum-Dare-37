@@ -43,6 +43,9 @@ function get_actual_coords(rel, pos)
 	if rel == nil then
 		rel = current_zone.zone.rendered_at
 	end
+	if not pos then
+		return 0,0
+	end
 		local x,y = pos.x,pos.y
 			if rel.rot == 1 then
 				x,y = y, -x
