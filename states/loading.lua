@@ -31,7 +31,6 @@ local function load_animation(prefix, suffix, name)
 			local test =  prefix .. number .. suffix
 			local f=io.open(test,"r")
 			if f~=nil then
-				print("test nil")
 				io.close(f)
 				animation[name][i] = love.graphics.newImage(test)
 			else

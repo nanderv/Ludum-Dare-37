@@ -364,13 +364,14 @@ function system.update(dt)
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
 			imageData = image:getData()
-			if floorTexX and floorTexY and floorTexX > 0 then
+			if floorTexX and floorTexY then
+				if  floorTexX > 0 then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue -raiseFloor)
 
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
-				if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
+				if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
 					imageData = ceiling:getData()
 					raiseFloor = 20 / currentDist
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
@@ -380,6 +381,8 @@ function system.update(dt)
 					--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 					--love.graphics.points(x, h - y + collapsedValue)
 				end
+			else
+			end
 			end
 		end
 	end
