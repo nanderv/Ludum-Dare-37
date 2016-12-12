@@ -12,7 +12,7 @@
 --setup map
 local map={}
 local entities = {}
-local floors = {}
+local physicalSide = {}
 local ceiling = {}
 local system = {}
 local dtt = 0
@@ -43,19 +43,15 @@ local canvas = love.graphics.newCanvas(w, h)
 
 local textureX = {}
 local entityTextureX = {}
-local floorTextureX = {}
-local halfHeightTexureX = {}
 
-local floorVariable = {}
+local physicalTextureX = {}
+local physicalVariable = {}
 
 local drawEntityLineStart = {}
 local drawEntityLineEnd = {}
 
-local drawFloorLineStart = {}
-local drawFloorLineEnd = {}
-
-local drawHalfHeightStart = {}
-local drawHalfHeightEnd = {}
+local drawPhysicalLineStart = {}
+local drawPhysicalLineEnd = {}
 
 local positions_found = {}
 function system.hasWall(x,y)
@@ -81,14 +77,23 @@ function system.getEntity(x,y)
 	return get_image(entities[x..":"..y])
 end
 
-
 --physical objects, as in beds, and tables
+--
+function system.getPhysicalHeight(x, y)
+	return entities[x..":"..y].height or 36 --remove or 36 when implemented
+end
+
 function system.getPhysicalSide(x,y)
 	return get_image(entities[math.floor(x)..":"..math.floor(y)])
 end
 
 function system.getPhysicalTop(x, y)
 	return get_image(entities[math.floor(x)..":"..math.floor(y)])
+end
+
+--used to distinct between walls and beds, both return false here
+function system.canWalkthrough(x,y)
+	return false
 end
 
 function system.update(dt)
@@ -110,14 +115,14 @@ function system.update(dt)
 		drawEntityLineStart[x] = {}
 		drawEntityLineEnd[x] = {}
 
-		floors[x] = {}
-		drawFloorLineStart[x] = {}
-		drawFloorLineEnd[x] = {}
+		physicalSide[x] = {}
+		drawPhysicalLineStart[x] = {}
+		drawPhysicalLineEnd[x] = {}
 
-		floorTextureX[x]  = {}
+		physicalTextureX[x]  = {}
 		entityTextureX[x] = {}
 
-		floorVariable[x] = {}
+		physicalVariable[x] = {}
 
 		local cameraX = 1.9 * x / w - 1
 		local rayPosX = posX
@@ -247,10 +252,10 @@ function system.update(dt)
 			end
 
 
-			if system.getFloor(mapX, mapY) then
-				floorCounter = floorCounter + 1
+			if system.hasPhysical(x, y) then
+				physicalCounter = physicalCounter + 1
 
-				floors[x][floorCounter] = system.getFloor(mapX, mapY)
+				physicalSide[x][physicalCounter] = system.getPhysicalSide(mapX, mapY)
 				if (side == 0) then
 					perpWallDist = math.abs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
 				else
@@ -273,9 +278,9 @@ function system.update(dt)
 				local texX = math.floor(wallX * imageWidth);
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
-				drawFloorLineStart[x][floorCounter] = h / 2
-				drawFloorLineEnd[x][floorCounter] = drawEnd
-				floorTextureX[x][floorCounter] = texX
+				drawPhysicalLineStart[x][physicalCounter] = h / 2
+				drawPhysicaLineEnd[x][PhysicalCounter] = drawEnd
+				physicalTextureX[x][physicalCounter] = texX
 			end
 		end
 
@@ -351,21 +356,25 @@ function system.update(dt)
 			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
-			imageData = image:getData()
 			if floorTexX and floorTexY then
+				local floorData = system.getFloor:getData()
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y - collapsedValue -raiseFloor)
+				love.graphics.points(x, y - collapsedValue)
 
+				local ceilingData = system.getCeiling:getData()
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
-				if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
-					imageData = ceiling:getData()
-					raiseFloor = 20 / currentDist
+
+				if system.hasPhysical(x, y) then
+					local topData = getPhysicalTop():getData()
+					raiseFloor = system.getPhysicalHeight(x,y) / currentDist
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, y - collapsedValue -raiseFloor)
-
+					--I (Jaimie) Believe that one of this can be commented out
+					--[[
 					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, h - y + collapsedValue)
+					]]--
 				end
 			end
 		end
@@ -426,8 +435,8 @@ function system.draw()
 	for x = 0, w, 1 do
 		for i = 20, 0, -1 do
 			if  floors[x] and floors[x][i] then
-				quad = love.graphics.newQuad(floorTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
-				love.graphics.draw(floors[x][i], quad, x, drawFloorLineStart[x][i], 0, 1, (drawFloorLineEnd[x][i] - drawFloorLineStart[x][i] + 1) / imageHeight, 0, 0)
+				quad = love.graphics.newQuad(physicalTextureX[x][i] % imageWidth, 0, 1, imageHeight, imageWidth, imageHeight)
+				love.graphics.draw(floors[x][i], quad, x, drawPhysicalLineStart[x][i], 0, 1, (drawPhysicalLineEnd[x][i] - drawPhysicalLineStart[x][i] + 1) / imageHeight, 0, 0)
 			end
 		end
 	end
