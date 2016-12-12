@@ -53,12 +53,28 @@ loading.phases = {
   core.reset_game,
   function()
     --load_image('assets/redbrick.png', "redbrick")
-    load_image('assets/wood.png', "wood")
-	load_image("assets/redbrick.png", "redbrick")
+
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
 	load_image("assets/room/furniture/bed_base.png", "bed")
 	load_image("assets/floor_tile_blood2.png", "floor_tile")
 	load_image("assets/hallway/ceiling/ceiling1.png", "ceiling_tile")
+    load_image("assets/Notes/note.png", "note")
+
+
+    load_image("assets/Notes/videogame_note1.png", "note1")
+    load_image("assets/Notes/videogame_note2.png", "note2")
+    load_image("assets/Notes/videogame_note3.png", "note3")
+    load_image("assets/Notes/videogame_note4.png", "note4")
+    load_image("assets/Notes/videogame_note5.png", "note5")
+    load_image("assets/Notes/videogame_note6.png", "note6")
+    load_image("assets/Notes/videogame_note7.png", "note7")
+    load_image("assets/Notes/videogame_note8.png", "note8")
+    load_image("assets/Notes/videogame_note9.png", "note9")
+
+
+    load_image("assets/room/lights/Lightbulb dim.png", "light")
+
+  
 	--load_image("wipArt/transparant_texture.png", "transparent")
   load_image("assets/room/walls/wall_dark_middle.png", "wall1")
   load_image("assets/hallway/walls/walls0.png", "hallway_wall1")
@@ -98,7 +114,6 @@ loading.phases = {
 
        local pl = core.entity.add(game.entity_definitions.player.player(0.5,0.5, 20))
 
-          core.entity.add(game.entity_definitions.note.note(1,1, "videogame_note1"))
 
 
     end,

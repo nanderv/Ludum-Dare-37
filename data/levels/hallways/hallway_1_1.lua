@@ -20,7 +20,7 @@ all_regions["hallway_test"] =  {
 				add_walls({
 				{1,0,"wall1"},
 				{1,1,"wall1"},
-				{1,2,"wall1"},
+				{2,2,"wall1"},
 				{1,3,"wall1"},
 				{1,4,"wall1"},
 				{1,5,"wall1"},
@@ -65,8 +65,11 @@ all_regions["hallway_test"] =  {
 
 
 		add_entity(game.entity_definitions.triggers.location_fade(4,0,2,6,0.7), list, entity.zone.rendered_at)
-		add_entity(game.entity_definitions.objs.entity(0,2, "floor_tile"), list, entity.zone.rendered_at)
-		add_entity(game.entity_definitions.objs.physical_object(0,2, "floor_tile", "floor_tile", 20), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.objs.entity(2,2, "note"), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.note.note(1,2, "note1"), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.note.note(0,2, "note1"), list, entity.zone.rendered_at)
+
+		add_entity(game.entity_definitions.objs.physical_object(2,2, "bed_base", "wall1", 20), list, entity.zone.rendered_at)
 
 
 

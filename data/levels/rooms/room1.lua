@@ -56,6 +56,8 @@ all_regions["room1"] =  {
 		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"notanywhere1"), list, entity.zone.rendered_at)
 add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.objs.entity(1,2, "light"), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.objs.entity(-1,2, "light"), list, entity.zone.rendered_at)
 
 
 		return (rot+ all_regions["room1"].end_position.rot)%4
