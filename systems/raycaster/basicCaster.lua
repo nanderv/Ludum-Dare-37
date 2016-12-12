@@ -328,17 +328,18 @@ function system.update(dt)
 
 			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
 
+
 			local currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
 			local currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
 
 			local floorTexX, floorTexY;
 			local raiseFloor = 0
-			print("floor", currentFloorX, currentFloorY)
+			--print("floor", currentFloorX, currentFloorY)
 			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 			if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
 				imageData = ceiling:getData()
-				raiseFloor =  5
+				raiseFloor = 20 / currentDist
 			else
 				imageData = image:getData()
 			end
