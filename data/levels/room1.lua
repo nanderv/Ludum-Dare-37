@@ -33,11 +33,11 @@ all_regions["room1"] =  {
 			}
 		, list, entity.zone.rendered_at)
 		add_floors_ceilings({
-			{0,0,"wall1","wall1"},
-			{0,1,"wall1","wall1"},
-			{0,2,"wall1","wall1"},
-			{0,3,"wall1","wall1"},
-			{0,4,"wall1","wall1"},
+			{0,0,"floor_tile","floor_tile"},
+			{0,1,"floor_tile","floor_tile"},
+			{0,2,"floor_tile","floor_tile"},
+			{0,3,"floor_tile","floor_tile"},
+			{0,4,"floor_tile","floor_tile"},
 			}
 		, list, entity.zone.rendered_at)
 

@@ -350,7 +350,7 @@ function system.update(dt)
 
 
 		--Draw to render target / canvas
-		for y = drawEnd + 1-5, h + collapsedValue, 1 do
+		for y = drawEnd + 1-5, h + collapsedValue, 2 do
 			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
 			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
@@ -366,21 +366,22 @@ function system.update(dt)
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
 			if not system.hasWall(math.floor(currentFloorX), math.floor(currentFloorY)) and floorTexX and floorTexY then
-				print("text X and Y", math.floor(currentFloorX), math.floor(currentFloorY))
 				if  system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)) then
 				local floorData = system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
 				love.graphics.setColor(floorData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y - collapsedValue)
+
+				love.graphics.points(x, y - collapsedValue,x, y - collapsedValue+1)
 
 				local ceilingData = system.getCeiling(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, h - y + collapsedValue)
+				love.graphics.points(x, h - y + collapsedValue,x, y - collapsedValue+1)
 
 				if system.hasPhysical(x, y) then
 					local topData = getPhysicalTop():getData()
 					raiseFloor = system.getPhysicalHeight(currentFloorX, currentFloorY) / currentDist
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
-					love.graphics.points(x, y - collapsedValue -raiseFloor)
+
+					love.graphics.points(x, y - collapsedValue -raiseFloor,x, y - collapsedValue+1-raiseFloor)
 					--I (Jaimie) Believe that one of this can be commented out
 					--[[
 					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
@@ -391,6 +392,7 @@ function system.update(dt)
 			end
 		end
 	end
+
 	love.graphics.setCanvas()
 end
 
