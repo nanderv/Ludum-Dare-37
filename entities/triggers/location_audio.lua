@@ -5,6 +5,6 @@ return function(x,y, source_name)
   agent.name ="location"
   agent.position = {x=x, y=y}
   agent.id = "location"..id
-  agent.triggered = {source_name = source_name}
+  agent.triggered = {source = source_name}
   return agent
 end
