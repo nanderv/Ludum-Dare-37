@@ -81,8 +81,8 @@ function system.getEntity(x,y)
 	return get_image(entities[x..":"..y])
 end
 
-function
 
+--physical objects, as in beds, and tables
 function system.getPhysicalSide(x,y)
 	return get_image(entities[math.floor(x)..":"..math.floor(y)])
 end
