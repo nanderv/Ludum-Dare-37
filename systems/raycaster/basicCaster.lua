@@ -365,18 +365,19 @@ function system.update(dt)
 			floorTexX = math.floor(currentFloorX * imageWidth / 2) % imageWidth;
 			floorTexY = math.floor(currentFloorY * imageHeight / 2) % imageHeight;
 
-			if floorTexX and floorTexY then
-				local floorData = system.getFloor(x,y):getData()
-				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
+			if system.hasPhysical(math.floor(currentFloorX), math.floor(currentFloorY)) and floorTexX and floorTexY then
+				print("text X and Y", math.floor(currentFloorX), math.floor(currentFloorY))
+				local floorData = system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
+				love.graphics.setColor(floorData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue)
 
-				local ceilingData = system.getCeiling:getData()
+				local ceilingData = system.getCeiling(currentFloorX, currentFloorY):getData()
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
 
 				if system.hasPhysical(x, y) then
 					local topData = getPhysicalTop():getData()
-					raiseFloor = system.getPhysicalHeight(x,y) / currentDist
+					raiseFloor = system.getPhysicalHeight(currentFloorX, currentFloorY) / currentDist
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, y - collapsedValue -raiseFloor)
 					--I (Jaimie) Believe that one of this can be commented out
