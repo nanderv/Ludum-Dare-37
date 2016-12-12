@@ -367,12 +367,12 @@ function system.update(dt)
 
 			if not system.hasWall(math.floor(currentFloorX), math.floor(currentFloorY)) and floorTexX and floorTexY then
 				if  system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)) then
-				local floorData = system.getFloor(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
+				local floorData = get_image(game___objs.floor[math.floor(currentFloorX)..":".. math.floor(currentFloorY)]):getData()
 				love.graphics.setColor(floorData:getPixel(floorTexX, floorTexY))
 
 				love.graphics.points(x, y - collapsedValue,x, y - collapsedValue+1)
 
-				local ceilingData = system.getCeiling(math.floor(currentFloorX), math.floor(currentFloorY)):getData()
+				local ceilingData =  get_image(game___objs.ceiling[math.floor(currentFloorX)..":".. math.floor(currentFloorY)]):getData()
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue,x, y - collapsedValue+1)
 
