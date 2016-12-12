@@ -23,6 +23,7 @@ local h = love.graphics.getHeight() / scaleFactor
 local image = get_image("floor_tile")
 local imageData = image:getData()
 
+local collapsedValue = 0 --set to around 5 to create effect of floor and ceiling coming toward each other in the distance
 
 local ceiling = get_image("ceiling_tile")
 local ceilingData = ceiling:getData()
@@ -322,7 +323,7 @@ function system.update(dt)
 
 
 		--Draw to render target / canvas
-		for y = drawEnd + 1, h, 1 do
+		for y = drawEnd + 1-5, h + collapsedValue, 1 do
 			currentDist = h / (2.0 * y - h) --you could make a small lookup table for this instead
 
 			local weight = (currentDist - distPlayer) / (distWall - distPlayer);
@@ -336,10 +337,10 @@ function system.update(dt)
 
 			if floorTexX and floorTexY then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, y)
+				love.graphics.points(x, y - collapsedValue)
 
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-				love.graphics.points(x, h-y)
+				love.graphics.points(x, h - y + collapsedValue)
 			end
 		end
 	end
