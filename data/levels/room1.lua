@@ -1,19 +1,4 @@
 local a = 1
-function add_walls(ccs, list, zone)
-	for k,v in pairs(ccs) do
-		print("HOI")
-			add_entity(game.entity_definitions.objs.wall(v[1], v[2], v[3]), list, zone)
-	end
-end
-function add_floors_ceilings(ccs, list, zone)
-	for k,v in pairs(ccs) do
-		print("HOI")
-			add_entity(game.entity_definitions.objs.floor(v[1], v[2], v[3]), list, zone)
-			add_entity(game.entity_definitions.objs.ceiling(v[1], v[2], v[4]), list, zone)
-
-	end
-end
-
 
 all_regions["room1"] =  {
 	begin_position     = {x=0,y=0, rot=0},
@@ -49,6 +34,10 @@ all_regions["room1"] =  {
 		, list, entity.zone.rendered_at)
 		add_floors_ceilings({
 			{0,0,"wall1","wall1"},
+			{0,1,"wall1","wall1"},
+			{0,2,"wall1","wall1"},
+			{0,3,"wall1","wall1"},
+			{0,4,"wall1","wall1"},
 			}
 		, list, entity.zone.rendered_at)
 

@@ -4,27 +4,7 @@ local     function pack(...)
     end
 
 function load_walls(wall_list, list, bx, by, brot)
-	for k,v in pairs(wall_list) do
-		local ent = game.entity_definitions.wall.base_wall(v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8])
-		local axx, bxx =  ent.position.x, ent.position.y
-		if brot == 1 then
-			ent.position.x, ent.position.y  = ent.position.y, - ent.position.x
-			ent.walls.top, ent.walls.right, ent.walls.bottom, ent.walls.left = ent.walls.left, ent.walls.top, ent.walls.right, ent.walls.bottom
-		end
-		if brot == 2 then
-			ent.position.x, ent.position.y  = -ent.position.x, - ent.position.y
-			ent.walls.top, ent.walls.right, ent.walls.bottom, ent.walls.left =  ent.walls.bottom, ent.walls.left, ent.walls.top, ent.walls.right
-		end
-		if brot == 3 then
-			ent.position.x, ent.position.y  = -ent.position.y,  ent.position.x
-			ent.walls.top, ent.walls.right, ent.walls.bottom, ent.walls.left =  ent.walls.right, ent.walls.bottom, ent.walls.left, ent.walls.top
-		end
-		local ax, ay = ent.position.x, ent.position.y
-
-		ent.position.x, ent.position.y = ent.position.x+ bx, ent.position.y+ by
-		list[#list+1] = ent
-		core.entity.add(ent)
-	end
+	error("Archaic code is running... Sad panda is sad")
 end
 
 local actual_coords = {}
