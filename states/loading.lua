@@ -57,8 +57,9 @@ loading.phases = {
     load_image('assets/wood.png', "wood")
 	load_image("assets/redbrick.png", "redbrick")
     load_image("assets/Notes/videogame_note1.png", "videogame_note1")
+	load_image("assets/room/furniture/bed_base.png", "bed")
 	load_image("assets/floor_tile_blood2.png", "floor_tile")
-	load_image("assets/hallway/walls/walls0.png", "ceiling_tile")
+	load_image("assets/hallway/ceiling/ceiling1.png", "ceiling_tile")
 	load_image("wipArt/transparant_texture.png", "transparent")
 
 	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade0");
