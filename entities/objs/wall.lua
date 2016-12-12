@@ -12,6 +12,14 @@ function add_floors_ceilings(ccs, list, zone)
 
 	end
 end
+function add_entities(css,list, zone)
+	for k,v in pairs(ccs) do
+		
+			add_entity(game.entity_definitions.objs.entity(v[1], v[2], v[3]), list, zone)
+
+	end
+end
+
 
 return function(x,y, tex)
  	local agent = {}

@@ -9,10 +9,7 @@ all_regions["room2_t2"] =  {
 		local bRot = (rot+ entity.zone.begin_position.rot)%4
 		local bX   = x - entity.zone.begin_position.x
 		local bY   = y - entity.zone.begin_position.y
-		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
-		load_walls(		{
 
-		},list, bX, bY, bRot )
 		return (rot + all_regions["hallway1"].end_position.rot)%4
 	end}
 

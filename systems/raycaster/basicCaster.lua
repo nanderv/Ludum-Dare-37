@@ -365,6 +365,7 @@ function system.update(dt)
 
 			imageData = image:getData()
 			if floorTexX and floorTexY then
+				if  floorTexX > 0 then
 				love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, y - collapsedValue -raiseFloor)
 
@@ -380,6 +381,8 @@ function system.update(dt)
 					--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 					--love.graphics.points(x, h - y + collapsedValue)
 				end
+			else
+			end
 			end
 		end
 	end
