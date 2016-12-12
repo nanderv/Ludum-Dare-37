@@ -83,11 +83,11 @@ end
 
 function
 
-function getPhysicalSide(x, y)
+function system.getPhysicalSide(x,y)
 	return get_image(entities[math.floor(x)..":"..math.floor(y)])
 end
 
-function getPhysicalTop(x, y)
+function system.getPhysicalTop(x, y)
 	return get_image(entities[math.floor(x)..":"..math.floor(y)])
 end
 
