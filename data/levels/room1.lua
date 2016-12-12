@@ -1,11 +1,4 @@
 local a = 1
-function add_walls(ccs, list, zone)
-	for k,v in pairs(ccs) do
-		print("HOI")
-			add_entity(game.entity_definitions.objs.wall(v[1], v[2], v[3]), list, zone)
-	end
-end
-
 
 all_regions["room1"] =  {
 	begin_position     = {x=0,y=0, rot=0},
@@ -19,20 +12,35 @@ all_regions["room1"] =  {
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
 		add_walls({
+			{1,5,"wall1"},
+			{0,5,"wall1"},
+			{-1,5,"wall1"},
+			{1,4,"wall1"},
+			{-1,4,"wall1"},
+			{1,3,"wall1"},
+			{-1,3,"wall1"},
+			{1,2,"wall1"},
+			{-1,2,"wall1"},
 			{1,1,"wall1"},
-			{0,1,"wall1"},
 			{-1,1,"wall1"},
+			{1,0,"wall1"},
+			
 			{-1,0,"wall1"},
 			{-1,-1,"wall1"},
 			{0,-1,"wall1"},
 			{1,-1,"wall1"},
-			{1,0,"wall1"},
+			
+			}
+		, list, entity.zone.rendered_at)
+		add_floors_ceilings({
+			{0,0,"wall1","wall1"},
+			{0,1,"wall1","wall1"},
+			{0,2,"wall1","wall1"},
+			{0,3,"wall1","wall1"},
+			{0,4,"wall1","wall1"},
+			}
+		, list, entity.zone.rendered_at)
 
-
-		}
-
-
-			, list, entity.zone.rendered_at)
 		--add_entity(game.entity_definitions.triggers.location_fade(2,0,1,2,1.1), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.location_audio(2,0,"staywithus1"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)

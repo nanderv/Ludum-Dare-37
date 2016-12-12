@@ -4,6 +4,6 @@ return function(x,y, side, top, height)
  	id =  id + 1
  	agent.name       ="floor".. id
 	agent.position   = {x=x, y=y}
-	agent.physical = {side=side, top=top, height}
+	agent.physical = {side=side, top=top, height=height}
 	return agent
 end
