@@ -12,12 +12,14 @@ system.update = function(dt) end
 system.register = function(e)
 	game___objs.physical_side[e.position.x..":"..e.position.y] = e.physical.side
 	game___objs.physical_top[e.position.x..":"..e.position.y] = e.physical.top
+	game___objs.physical_height[e.position.x..":"..e.position.y] = e.physical.height
+
 end
 
 system.unregister = function(e)
 	game___objs.physical_side[e.position.x..":"..e.position.y] = nil
 	game___objs.physical_top[e.position.x..":"..e.position.y] = nil
-
+		game___objs.physical_height[e.position.x..":"..e.position.y] = nil
 end
 
 system.requirements = {position=true, physical=true}

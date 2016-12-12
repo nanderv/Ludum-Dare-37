@@ -1,5 +1,9 @@
 local a = 1
-
+function add_walls(ccs, list, zone)
+	for k,v in pairs(ccs) do
+			add_entity(game.entity_definitions.objs.wall(ccs[1], ccs[2], ccx[3]), list, zone)
+	end
+end
 
 
 all_regions["room1"] =  {
@@ -13,7 +17,16 @@ all_regions["room1"] =  {
 		local bY   = y - entity.zone.begin_position.y
 
 		entity.zone.rendered_at = {x = bX, y = bY, rot = bRot}
-		add_entity(game.entity_definitions.objs.wall(1,1,"wall1"), list, entity.zone.rendered_at)
+		add_entity({
+			{3,1,"wall1"},
+			{4,1,"wall1"},
+			{5,1,"wall1"}
+
+
+		}
+
+
+			, list, entity.zone.rendered_at)
 		--add_entity(game.entity_definitions.triggers.location_fade(2,0,1,2,1.1), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.location_audio(2,0,"staywithus1"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.triggers.randomaudio(0.6,"staywithus1"), list, entity.zone.rendered_at)
