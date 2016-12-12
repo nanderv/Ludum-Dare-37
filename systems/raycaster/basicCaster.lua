@@ -376,12 +376,14 @@ function system.update(dt)
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 					love.graphics.points(x, y - collapsedValue -raiseFloor)
 
-					love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
-					love.graphics.points(x, h - y + collapsedValue)
+					--these line below might be removed without problem? (Jaimie)
+					--love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
+					--love.graphics.points(x, h - y + collapsedValue)
 				end
 			end
 		end
 	end
+
 	love.graphics.setCanvas()
 end
 
