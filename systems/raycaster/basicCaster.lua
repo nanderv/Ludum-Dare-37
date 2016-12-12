@@ -53,6 +53,8 @@ local drawEntityLineEnd = {}
 local drawPhysicalLineStart = {}
 local drawPhysicalLineEnd = {}
 
+local physicalCounter = 0
+
 local positions_found = {}
 function system.hasWall(x,y)
 	return not not game___objs.wall[x..":"..y]
@@ -288,7 +290,7 @@ function system.update(dt)
 				if(side == 0 and rayDirX > 0) then texX = imageWidth - texX - 1 end
 				if(side == 1 and rayDirY < 0) then texX = imageWidth - texX - 1 end
 				drawPhysicalLineStart[x][physicalCounter] = h / 2
-				drawPhysicaLineEnd[x][PhysicalCounter] = drawEnd
+				drawPhysicalLineEnd[x][physicalCounter] = drawEnd
 				physicalTextureX[x][physicalCounter] = texX
 			end
 		end
@@ -373,7 +375,11 @@ function system.update(dt)
 					love.graphics.points(x, h - y + collapsedValue)
 					if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
 						imageData = ceiling:getData()
-						raiseFloor = getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) / currentDist
+						if system.getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) then
+							raiseFloor = system.getPhysicalHeight(math.floor(floorTexX), math.floor(floorTexY)) / currentDist
+						else
+							raiseFloor = 20
+						end
 						love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
 						love.graphics.points(x, y - collapsedValue -raiseFloor)
 
@@ -382,7 +388,7 @@ function system.update(dt)
 						--love.graphics.points(x, h - y + collapsedValue)
 					end
 				else
-					
+
 				end
 			end
 		end
