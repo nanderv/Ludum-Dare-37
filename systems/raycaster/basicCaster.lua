@@ -370,7 +370,7 @@ function system.update(dt)
 
 				love.graphics.setColor(ceilingData:getPixel(floorTexX, floorTexY))
 				love.graphics.points(x, h - y + collapsedValue)
-				if currentFloorX > 0 and currentFloorX < 1 and currentFloorY > 2 and currentFloorY < 3 then
+				if system.hasPhysical(math.floor(currentFloorX),math.floor(currentFloorY)) then
 					imageData = ceiling:getData()
 					raiseFloor = 20 / currentDist
 					love.graphics.setColor(imageData:getPixel(floorTexX, floorTexY))
