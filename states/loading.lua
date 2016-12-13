@@ -26,22 +26,18 @@ local function load_animation(prefix, suffix, name)
 	if not animation[name] then
 		animation[name] = {}
 		local running = true
-		for i = 0, 1000, 1 do
-			number = string.format("%4.4d", i)
-			local test =  prefix .. number .. suffix
-			local f=io.open(test,"r")
-			if f~=nil then
-				io.close(f)
+    
+		for i=0,122, 1  do
+        local test = prefix ..  string.format("%4.4d", i) .. suffix
 				animation[name][i] = love.graphics.newImage(test)
-			else
-				break
-			end
+    
 		end
 	end
 end
 
 function get_animation(name, frame)
 	if animation[name] then
+    print( animation[name][frame], frame)
 		return animation[name][frame]
 	else
 		return nil
@@ -69,7 +65,6 @@ loading.phases = {
     load_image("assets/Notes/videogame_note6.png", "note6")
     load_image("assets/Notes/videogame_note7.png", "note7")
     load_image("assets/Notes/videogame_note8.png", "note8")
-    load_image("assets/Notes/videogame_note9.png", "note9")
 
 
     load_image("assets/room/lights/Lightbulb dim.png", "light")
@@ -79,14 +74,7 @@ loading.phases = {
   load_image("assets/room/walls/wall_dark_middle.png", "wall1")
   load_image("assets/hallway/walls/walls0.png", "hallway_wall1")
 
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "0.png", "shade0");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "1.png", "shade1");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "2.png", "shade2");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "3.png", "shade3");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "4.png", "shade4");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "5.png", "shade5");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "6.png", "shade6");
-	load_animation("wipArt/hallway/shade/sliced animations/shade_animated_", "7.png", "shade7");
+
   end,
   require 'entities.load_all_entity_definitions',
   function()

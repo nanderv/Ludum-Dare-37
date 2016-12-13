@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 all_regions["hallway_test"] =  {
 	begin_position     = {x=0,y=0, rot=0},
 	end_position       = {x=-4,y=16, rot=3},
@@ -64,10 +57,9 @@ all_regions["hallway_test"] =  {
 		, list, entity.zone.rendered_at)
 
 
-		add_entity(game.entity_definitions.triggers.location_fade(4,0,2,6,0.7), list, entity.zone.rendered_at)
-		add_entity(game.entity_definitions.objs.entity(2,2, "note"), list, entity.zone.rendered_at)
-		add_entity(game.entity_definitions.note.note(1,2, "note1"), list, entity.zone.rendered_at)
-		add_entity(game.entity_definitions.note.note(0,2, "note1"), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.triggers.location_fade(0,12,2,6,0.7), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.triggers.location_audio(0,11,"notanywhere1"), list, entity.zone.rendered_at)
+
 
 		add_entity(game.entity_definitions.objs.physical_object(2,2, "bed_base", "wall1", 20), list, entity.zone.rendered_at)
 

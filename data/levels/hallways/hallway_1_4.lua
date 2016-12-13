@@ -32,7 +32,18 @@ all_regions["hallway_1_4"] =  {
 				{-6,1,"wall1"},
 			}
 		, list, entity.zone.rendered_at)
-
+--	"notanywhere1"
+--"staywithus1"
+--"daddycrying1"
+--"getbetter1"
+--"getbetter2"
+--"getout1"
+--"leavenow1"
+--"missyou1"
+--"notanywhere1"
+--"notanywhere2"
+--"stayisbad1"
+--"staywithus1"
 		add_entity(game.entity_definitions.objs.entity(0,3, "note"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.note.note(0,3, "note3"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.note.note(0,2, "note3"), list, entity.zone.rendered_at)

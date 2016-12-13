@@ -43,12 +43,24 @@ all_regions["hallway_1_2"] =  {
 				{-6,1,"wall1"},
 			}
 		, list, entity.zone.rendered_at)
-
+--	"notanywhere1"
+--"staywithus1"
+--"daddycrying1"
+--"getbetter1"
+--"getbetter2"
+--"getout1"
+--"leavenow1"
+--"missyou1"
+--"notanywhere1"
+--"notanywhere2"
+--"stayisbad1"
+--"staywithus1"
 		add_entity(game.entity_definitions.objs.entity(0,3, "note"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.note.note(0,3, "note2"), list, entity.zone.rendered_at)
 		add_entity(game.entity_definitions.note.note(0,2, "note2"), list, entity.zone.rendered_at)
-		add_entity(game.entity_definitions.triggers.location_fade(4,0,2,6,0.7), list, entity.zone.rendered_at)
 
+		add_entity(game.entity_definitions.triggers.location_audio(0,2,"getbetter1"), list, entity.zone.rendered_at)
+		add_entity(game.entity_definitions.triggers.location_audio(-4,2,"getout1"), list, entity.zone.rendered_at)
 
 
 

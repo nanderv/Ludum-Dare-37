@@ -7,9 +7,9 @@
 
 all_regions["hallway_1_9"] =  {
 	begin_position     = {x=0,y=0, rot=0},
-	end_position       = {x=-4,y=16, rot=3},
+	end_position       = {x=-6,y=16, rot=3},
 	no_return_position = {x=-4, y=16},
-	next_room 		   = "room2",
+	next_room 		   = "hallway_111",
 	func               = function(list, x,y,rot, entity)
 		--a
 		local bRot = (rot+ entity.zone.begin_position.rot)%4
@@ -57,12 +57,28 @@ all_regions["hallway_1_9"] =  {
 				{-1,17,"wall1"},
 				{-2,17,"wall1"},
 				{-3,17,"wall1"},
+				{-4,17,"wall1"},
+				{-5,17,"wall1"},
 				{-1,15,"wall1"},
 				{-2,15,"wall1"},
 				{-3,15,"wall1"},
+				{-4,15,"wall1"},
+				{-5,15,"wall1"},	
+
 			}
 		, list, entity.zone.rendered_at)
-
+--	"notanywhere1"
+--"staywithus1"
+--"daddycrying1"
+--"getbetter1"
+--"getbetter2"
+--"getout1"
+--"leavenow1"
+--"missyou1"
+--"notanywhere1"
+--"notanywhere2"
+--"stayisbad1"
+--"staywithus1"
 
 		add_entity(game.entity_definitions.triggers.location_fade(4,0,2,6,0.7), list, entity.zone.rendered_at)
 

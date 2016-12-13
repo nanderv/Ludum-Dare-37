@@ -10,7 +10,6 @@ system.update = function(dt)
 		  	print("HERE")
 			add_effect(game.entity_definitions.sound(v.triggered.source))
 			v.random.already = 0
-			v.random.chance = v.random.chance * 1.2
 		end
 	end
 	end

@@ -1,4 +1,4 @@
-SET game=Stealth_Game
+SET game=Dissonance
 dir
 
 jar -cMf build\%game%.love *

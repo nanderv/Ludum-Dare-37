@@ -111,8 +111,8 @@ end
 function system.update(dt)
 	animationTime = animationTime + dt
 	if animationTime > 0.1 then
-		animationFrame = animationFrame + 1
-		animationFrame = animationFrame % 122
+		
+		animationFrame = animationFrame % 122 + 1
 		animationTime = animationTime - 0.1
 	end
 
@@ -467,9 +467,12 @@ function system.draw()
 			end
 		end
 	end
-
+	love.graphics.setColor(0,0,0,64)
+	love.graphics.rectangle("fill",0,0,1000,1000)
 	love.graphics.pop()
-	love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 3)
+	
+		love.graphics.setColor(255,255,255,255)
+
 end
 
 function love.keypressed(key, unicode)

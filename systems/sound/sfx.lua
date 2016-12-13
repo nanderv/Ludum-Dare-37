@@ -5,6 +5,16 @@ system.playing_names = {}
 system.sources = {}
 system.sources["notanywhere1"] = "assets/whispers/notanywhere1.ogg"
 system.sources["staywithus1"]  = "assets/whispers/staywithus1.ogg"
+system.sources["daddycrying1"]  = "assets/whispers/daddycrying1.ogg"
+system.sources["getbetter1"]  = "assets/whispers/getbetter1.ogg"
+system.sources["getbetter2"]  = "assets/whispers/getbetter2.ogg"
+system.sources["getout1"]  = "assets/whispers/getout1.ogg"
+system.sources["leavenow1"]  = "assets/whispers/leavenow1.ogg"
+system.sources["missyou1"]  = "assets/whispers/missyou1.ogg"
+system.sources["notanywhere1"]  = "assets/whispers/notanywhere1.ogg"
+system.sources["notanywhere2"]  = "assets/whispers/notanywhere2.ogg"
+system.sources["stayisbad1"]  = "assets/whispers/stayisbad1.ogg"
+system.sources["staywithus1"]  = "assets/whispers/staywithus1.ogg"
 
 system.name = "SFX"
 

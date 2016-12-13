@@ -1,10 +1,10 @@
 
 
-all_regions["hallway_1_7"] =  {
+all_regions["hallway_1_3b"] =  {
 	begin_position     = {x=0,y=0, rot=0},
-	end_position       = {x=5,y=2, rot=1},
+	end_position       = {x=3,y=2, rot=1},
 	no_return_position = {x=2, y=2},
-	next_room 		   = "hallway_1_8",
+	next_room 		   = "hallway_1_4",
 	func               = function(list, x,y,rot, entity)
 		--a
 		local bRot = (rot+ entity.zone.begin_position.rot)%4
@@ -24,10 +24,8 @@ all_regions["hallway_1_7"] =  {
 				{ 1,1,"wall1"},
 				{ 2,3,"wall1"},
 				{ 2,1,"wall1"},
-				{ 3,3,"wall1"},
-				{ 3,1,"wall1"},
-				{ 4,3,"wall1"},
-				{ 4,1,"wall1"},
+
+
 
 
 			}
@@ -50,5 +48,5 @@ all_regions["hallway_1_7"] =  {
 
 
 
-		return (rot+ all_regions["hallway_1_7"].end_position.rot)%4
+		return (rot+ all_regions["hallway_1_3b"].end_position.rot)%4
 	end}
